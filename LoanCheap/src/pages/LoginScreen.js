@@ -9,10 +9,13 @@ import {
   Button,
   Alert,
 } from 'react-native';
+import { AuthContext } from "../../App"
 
 const LoginScreen = () => {
   const [email, onChangeEmail] = useState(null);
   const [password, onChangePassword] = useState(null);
+  const {signIn}  = React.useContext(AuthContext);
+
   return (
     <>
       <View style={styles.container}>
@@ -33,6 +36,7 @@ const LoginScreen = () => {
             value={password}
             placeholder="Password"
             placeholderTextColor="#05445E"
+            secureTextEntry
           />
         </SafeAreaView>
         <TouchableHighlight>
@@ -46,7 +50,7 @@ const LoginScreen = () => {
           <Button
             color="#05445E"
             title="Login"
-            onPress={() => Alert.alert(email, password)}
+            onPress={() => signIn({ email, password })}
           />
         </View>
       </View>
@@ -101,8 +105,6 @@ const styles = StyleSheet.create({
   },
   fixToText: {
     marginTop: 10,
-    // flexDirection: 'row',
-    // justifyContent: 'space-between',
   },
 });
 
