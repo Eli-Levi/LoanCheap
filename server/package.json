@@ -8,7 +8,12 @@
   },
   "author": "Ibrahem Chahine, Eli Levi, Dor Baram",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
     "express": "^4.18.2",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.7.3",
+    "mongoose-schema-extend": "^0.2.2",
     "twilio": "^3.83.3"
   }
 }
