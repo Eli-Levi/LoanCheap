@@ -25,14 +25,14 @@ const LoginScreen = () => {
             onChangeText={onChangeEmail}
             value={email}
             placeholder="Email Address"
-            placeholderTextColor="#D4F1F4"
+            placeholderTextColor="#05445E"
           />
           <TextInput
             style={styles.input}
             onChangeText={onChangePassword}
             value={password}
             placeholder="Password"
-            placeholderTextColor="#D4F1F4"
+            placeholderTextColor="#05445E"
           />
         </SafeAreaView>
         <TouchableHighlight>
@@ -44,7 +44,7 @@ const LoginScreen = () => {
         </TouchableHighlight>
         <View style={styles.fixToText}> 
           <Button
-            color="#000000"
+            color="#05445E"
             title="Login"
             onPress={() => Alert.alert(email, password)}
           />
@@ -58,15 +58,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 24,
-    backgroundColor: '#003060',
+    backgroundColor: '#D4F1F4',
   },
   titleLogo: {
     marginTop: 10,
     paddingVertical: 8,
     borderWidth: 2,
-    borderColor: '#D4F1F4',
+    borderColor: '#05445E',
     borderRadius: 6,
-    color: '#D4F1F4',
+    color: '#05445E',
     textAlign: 'center',
     fontSize: 30,
     fontWeight: 'bold',
@@ -74,28 +74,28 @@ const styles = StyleSheet.create({
   title: {
     marginTop: 24,
     borderRadius: 6,
-    color: '#D4F1F4',
+    color: '#05445E',
     textAlign: 'left',
     fontSize: 24,
     fontWeight: 'bold',
   },
   subTitle: {
-    color: '#D4F1F4',
+    color: '#05445E',
     textAlign: 'left',
     fontSize: 16,
   },
   input: {
     marginTop: 24,
-    color: '#D4F1F4',
+    color: '#05445E',
     textAlign: 'left',
     fontSize: 16,
     borderWidth: 1,
     borderRadius: 6,
-    borderColor: '#D4F1F4',
+    borderColor: '#05445E',
   },
   createButton: {
     marginTop: 10,
-    color: '#D4F1F4',
+    color: '#05445E',
     textAlign: 'left',
     fontSize: 16,
   },
