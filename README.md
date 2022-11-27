@@ -1,9 +1,6 @@
 # LoanCheap
 ## _The source for the most affordable loans_
 
-LoanCHeap is a cloud-enabled, mobile-ready, offline-storage compatible,
-AngularJS-powered HTML5 Markdown editor.
-
 LoanCHeap is a mobile app, for loans.
 
 - Log in and find the best loan opportunities from the best banks
