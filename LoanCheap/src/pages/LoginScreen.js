@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 
 const LoginScreen = () => {
-  const [email, onChangeEmail] = useState('Email Address');
+  const [email, onChangeEmail] = useState(null);
   const [password, onChangePassword] = useState(null);
   return (
     <>
@@ -24,6 +24,8 @@ const LoginScreen = () => {
             style={styles.input}
             onChangeText={onChangeEmail}
             value={email}
+            placeholder="Email Address"
+            placeholderTextColor="#D4F1F4"
           />
           <TextInput
             style={styles.input}
@@ -44,7 +46,7 @@ const LoginScreen = () => {
           <Button
             color="#000000"
             title="Login"
-            onPress={() => Alert.alert('Login buttom pressed')}
+            onPress={() => Alert.alert(email, password)}
           />
         </View>
       </View>
