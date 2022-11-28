@@ -16,6 +16,8 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import LoginScreen from './src/pages/LoginScreen';
 import HomeScreen from './src/pages/HomeScreen';
+import axios from 'axios';
+const API_URL = Platform.OS === 'ios' ? 'http://localhost:8080' : 'http://10.0.0.19:8080';
 
 const Stack = createNativeStackNavigator();
 const AuthContext = React.createContext();
@@ -57,6 +59,7 @@ const App: () => Node = ({navigation}) => {
     const bootstrapAsync = async () => {
       let userToken;
       try {
+        // TODO: validate the token
         userToken = await AsyncStorage.getItem('userToken');
       } catch (e) {
         // Restoring token failed
@@ -74,9 +77,27 @@ const App: () => Node = ({navigation}) => {
       signIn: async data => {
         // In a production app, we need to send some data (usually username, password) to server and get a token
         // We will also need to handle errors if sign in failed
-        await AsyncStorage.setItem('userToken', 'auth-token');
-        // In the example, we'll use a dummy token
-        dispatch({type: 'SIGN_IN', token: 'dummy-auth-token'});
+        const requestParameters = {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({email: data.email, password: data.password}),
+        };
+        try {
+          await fetch(
+            `${API_URL}/api/auth/signin`,
+            requestParameters,
+          ).then(response => {
+            response.json().then(data => {
+              console.log(JSON.stringify(data));
+              AsyncStorage.setItem('userToken', data.accessToken);
+            });
+          });
+        } catch (error) {
+          console.error(error);
+        }
+        dispatch({type: 'SIGN_IN', token: data.accessToken});
       },
       signOut: async () => {
         await AsyncStorage.removeItem('userToken');
