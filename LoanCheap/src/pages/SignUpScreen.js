@@ -18,10 +18,16 @@ const SignUpScreen = ({navigation}) => {
   const [password, onChangePassword] = useState(null);
   const [bankName, onChangeBankName] = useState(null);
   const [filesLink, onChangeFilesLink] = useState(null);
+  const [role, onChangeRole] = useState('user');
   const {signUp} = React.useContext(AuthContext);
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => {
     setIsEnabled(previousState => !previousState);
+    if (role === 'admin') {
+      onChangeRole('user');
+    } else {
+      onChangeRole('admin');
+    }
   };
 
   return (
@@ -99,7 +105,15 @@ const SignUpScreen = ({navigation}) => {
             color="#05445E"
             title="Sign up"
             onPress={() =>
-              signUp({name, phoneNumber, email, password, bankName, filesLink})
+              signUp({
+                name,
+                phoneNumber,
+                email,
+                password,
+                role,
+                bankName,
+                filesLink,
+              })
             }
           />
         </View>

@@ -8,6 +8,11 @@ const AdminRole = db.admin;
 const CostumerRole = db.costumer;
 
 exports.signup = (req, res) => {
+  const num = Number(req.body.phoneNumber);
+  if (!(Number.isInteger(num) && num > 0)) {
+    res.status(401).send({ error: "Enter a valid phone number" });
+    return;
+  }
   const user = new User({
     name: req.body.name,
     phoneNumber: req.body.phoneNumber,
@@ -16,7 +21,7 @@ exports.signup = (req, res) => {
   });
   user.save((err, user) => {
     if (err) {
-      res.status(500).send({ message: err });
+      res.status(401).send({ error: err });
       User.findById(user.id).remove();
       return;
     }
@@ -28,7 +33,7 @@ exports.signup = (req, res) => {
         },
         (err, roles) => {
           if (err) {
-            res.status(500).send({ message: err });
+            res.status(401).send({ error: err });
             return;
           }
           user.roles = roles;
@@ -39,16 +44,16 @@ exports.signup = (req, res) => {
             });
             adminRole.save((err) => {
               if (err) {
-                res.status(500).send({ message: err });
+                res.status(401).send({ error: err });
                 return;
               }
             });
             user.roleData = adminRole;
           } else {
-            const costumer = new CostumerRole({SubmittedRequests: []});
+            const costumer = new CostumerRole({ SubmittedRequests: [] });
             costumer.save((err) => {
               if (err) {
-                res.status(500).send({ message: err });
+                res.status(401).send({ error: err });
                 return;
               }
             });
@@ -56,12 +61,12 @@ exports.signup = (req, res) => {
           }
           user.save((err) => {
             if (err) {
-              res.status(500).send({ message: err });
+              res.status(401).send({ error: err });
               return;
             }
-            res.send({ message: "User added" });
+            console.log('user added');
+            res.status(200).send({ message: "User added" });
           });
-          
         }
       );
     }

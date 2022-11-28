@@ -84,19 +84,25 @@ const App: () => Node = ({navigation}) => {
           },
           body: JSON.stringify({email: data.email, password: data.password}),
         };
+        let token;
         try {
-          await fetch(`${API_URL}/api/auth/signin`, requestParameters).then(
-            response => {
-              response.json().then(data => {
-                // console.log(JSON.stringify(data));
-                AsyncStorage.setItem('userToken', data.accessToken);
-              });
-            },
-          );
+          await fetch(`${API_URL}/api/auth/signin`, requestParameters)
+            .then(response => {
+              if (response.ok) {
+                response.json().then(data => {
+                  AsyncStorage.setItem('userToken', data.accessToken);
+                  dispatch({type: 'SIGN_IN', token: data.accessToken});
+                });
+              } else {
+                Alert.alert('Error signing in: please try again');
+              }
+            })
+            .catch(error => {
+              console.log(error);
+            });
         } catch (error) {
           console.error(error);
         }
-        dispatch({type: 'SIGN_IN', token: data.accessToken});
       },
       signOut: async () => {
         await AsyncStorage.removeItem('userToken');
@@ -113,19 +119,30 @@ const App: () => Node = ({navigation}) => {
             phoneNumber: data.phoneNumber,
             email: data.email,
             password: data.password,
+            roles: data.role,
             bank: data.bankName,
             files: data.filesLink,
           }),
         };
         try {
-          await fetch(`${API_URL}/api/auth/signup`, requestParameters).then(
-            response => {
-              response.json().then(data => {
-                Alert.alert('account created successfully, please go  back to log in');
-              });
-            },
-          );
-          
+          await fetch(`${API_URL}/api/auth/signup`, requestParameters)
+            .then(response => {
+              Alert.alert(JSON.stringify(response));
+              if (response.ok) {
+                response.json().then(data => {
+                  Alert.alert(
+                    'account created successfully, please go  back to log in',
+                    JSON.stringify(data),
+                  );
+                  dispatch({type: 'SIGN_IN', token: null});
+                });
+              } else {
+                Alert.alert('Error signing up: please try again');
+              }
+            })
+            .catch(error => {
+              console.log(error);
+            });
         } catch (error) {
           Alert.alert(error);
           console.error(error);
