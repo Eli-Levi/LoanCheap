@@ -16,8 +16,11 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import LoginScreen from './src/pages/LoginScreen';
 import HomeScreen from './src/pages/HomeScreen';
+import SignUpScreen from './src/pages/SignUpScreen';
 import axios from 'axios';
-const API_URL = Platform.OS === 'ios' ? 'http://localhost:8080' : 'http://10.0.0.19:8080';
+// change to you'r ip
+const API_URL =
+  Platform.OS === 'ios' ? 'http://localhost:8080' : 'http://10.0.0.19:8080';
 
 const Stack = createNativeStackNavigator();
 const AuthContext = React.createContext();
@@ -59,14 +62,11 @@ const App: () => Node = ({navigation}) => {
     const bootstrapAsync = async () => {
       let userToken;
       try {
-        // TODO: validate the token
         userToken = await AsyncStorage.getItem('userToken');
       } catch (e) {
         // Restoring token failed
       }
-      // After restoring token, we may need to validate it in production apps
-      // This will switch to the App screen or Auth screen and this loading
-      // screen will be unmounted and thrown away.
+      // TODO: validate the token.
       dispatch({type: 'RESTORE_TOKEN', token: userToken});
     };
     bootstrapAsync();
@@ -85,15 +85,14 @@ const App: () => Node = ({navigation}) => {
           body: JSON.stringify({email: data.email, password: data.password}),
         };
         try {
-          await fetch(
-            `${API_URL}/api/auth/signin`,
-            requestParameters,
-          ).then(response => {
-            response.json().then(data => {
-              console.log(JSON.stringify(data));
-              AsyncStorage.setItem('userToken', data.accessToken);
-            });
-          });
+          await fetch(`${API_URL}/api/auth/signin`, requestParameters).then(
+            response => {
+              response.json().then(data => {
+                // console.log(JSON.stringify(data));
+                AsyncStorage.setItem('userToken', data.accessToken);
+              });
+            },
+          );
         } catch (error) {
           console.error(error);
         }
@@ -104,11 +103,33 @@ const App: () => Node = ({navigation}) => {
         dispatch({type: 'SIGN_OUT'});
       },
       signUp: async data => {
-        // In a production app, we need to send user data to server and get a token
-        // We will also need to handle errors if sign up failed
-        await AsyncStorage.setItem('userToken', 'auth-token');
-        // In the example, we'll use a dummy token
-        dispatch({type: 'SIGN_IN', token: 'dummy-auth-token'});
+        const requestParameters = {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name: data.name,
+            phoneNumber: data.phoneNumber,
+            email: data.email,
+            password: data.password,
+            bank: data.bankName,
+            files: data.filesLink,
+          }),
+        };
+        try {
+          await fetch(`${API_URL}/api/auth/signup`, requestParameters).then(
+            response => {
+              response.json().then(data => {
+                Alert.alert('account created successfully, please go  back to log in');
+              });
+            },
+          );
+          
+        } catch (error) {
+          Alert.alert(error);
+          console.error(error);
+        }
       },
     }),
     [],
@@ -118,15 +139,23 @@ const App: () => Node = ({navigation}) => {
       <NavigationContainer>
         <Stack.Navigator>
           {state.userToken == null ? (
-            // No token found, user isn't signed in
-            <Stack.Screen
-              name="SignIn"
-              component={LoginScreen}
-              options={{headerShown: false}}
-            />
+            <>
+              <Stack.Screen
+                name="SignIn"
+                component={LoginScreen}
+                options={{headerShown: false}}
+              />
+              <Stack.Screen
+                name="SignUp"
+                component={SignUpScreen}
+                options={{headerShown: false}}
+              />
+            </>
           ) : (
             // User is signed in
-            <Stack.Screen name="Home" component={HomeScreen} />
+            <>
+              <Stack.Screen name="Home" component={HomeScreen} />
+            </>
           )}
         </Stack.Navigator>
       </NavigationContainer>

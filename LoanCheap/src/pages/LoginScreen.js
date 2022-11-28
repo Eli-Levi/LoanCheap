@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { AuthContext } from "../../App"
 
-const LoginScreen = () => {
+const LoginScreen = ({ navigation }) => {
   const [email, onChangeEmail] = useState(null);
   const [password, onChangePassword] = useState(null);
   const {signIn}  = React.useContext(AuthContext);
@@ -39,7 +39,7 @@ const LoginScreen = () => {
             secureTextEntry
           />
         </SafeAreaView>
-        <TouchableHighlight>
+        <TouchableHighlight onPress={() => navigation.navigate('SignUp')}>
           <View>
             <Text style={styles.createButton}>
               Don't have an account? sign up

@@ -61,6 +61,7 @@ exports.signup = (req, res) => {
             }
             res.send({ message: "User added" });
           });
+          
         }
       );
     }
