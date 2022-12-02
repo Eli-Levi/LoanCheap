@@ -19,7 +19,7 @@ LoanCheap is built with:
 
 - [ReactNative] - open source UI software framework for creating native mobile apps
 - [Nodejs] - open-source, cross-platform JavaScript runtime environment
-- [Firebase] - app development platform that helps you build and grow apps and games users love
+- [Mongodb] - app development platform that helps you build and grow apps and games users love
 
 ## Installation
 
@@ -28,5 +28,5 @@ LoanCheap is built with:
    
    [ReactNative]: <https://reactnative.dev/>
    [Nodejs]: <https://nodejs.org/en/>
-   [Firebase]: <https://firebase.google.com/>
+   [Mongodb]: <https://www.mongodb.com/>
 
