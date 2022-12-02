@@ -64,7 +64,7 @@ exports.signup = (req, res) => {
               res.status(401).send({ error: err });
               return;
             }
-            console.log('user added');
+            console.log("user added");
             res.status(200).send({ message: "User added" });
           });
         }
@@ -94,13 +94,14 @@ exports.signin = (req, res) => {
         message: "worng password",
       });
     }
-
-    var token = jwt.sign({ id: user.id }, config.secret, {});
-    res.status(200).send({
-      id: user._id,
-      email: user.email,
-      roles: user.roles,
-      accessToken: token,
+    UserRole.findById(user.roles).exec((err, role) => {
+      var token = jwt.sign({ id: user.id }, config.secret, {});
+      res.status(200).send({
+        id: user._id,
+        email: user.email,
+        roles: role.name,
+        accessToken: token,
+      });
     });
   });
 };

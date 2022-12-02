@@ -17,6 +17,8 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import LoginScreen from './src/pages/LoginScreen';
 import HomeScreen from './src/pages/HomeScreen';
 import SignUpScreen from './src/pages/SignUpScreen';
+import AdminScreen from './src/pages/AdminScreen';
+import AddLoanScreen from './src/pages/AddLoanScreen';
 import axios from 'axios';
 // change to you'r ip
 const API_URL =
@@ -35,18 +37,21 @@ const App: () => Node = ({navigation}) => {
             ...prevState,
             userToken: action.token,
             isLoading: false,
+            isAdmin: action.admin,
           };
         case 'SIGN_IN':
           return {
             ...prevState,
             isSignout: false,
             userToken: action.token,
+            isAdmin: action.admin,
           };
         case 'SIGN_OUT':
           return {
             ...prevState,
             isSignout: true,
             userToken: null,
+            isAdmin: false,
           };
       }
     },
@@ -54,6 +59,7 @@ const App: () => Node = ({navigation}) => {
       isLoading: true,
       isSignout: false,
       userToken: null,
+      isAdmin: false,
     },
   );
 
@@ -61,13 +67,19 @@ const App: () => Node = ({navigation}) => {
     // Fetch the token from storage then navigate to our appropriate place
     const bootstrapAsync = async () => {
       let userToken;
+      let admin;
+      let adminBool;
       try {
         userToken = await AsyncStorage.getItem('userToken');
+        admin = await AsyncStorage.getItem('isAdmin');
+        if (admin == 'admin') {
+          adminBool = true;
+        }
       } catch (e) {
         // Restoring token failed
       }
       // TODO: validate the token.
-      dispatch({type: 'RESTORE_TOKEN', token: userToken});
+      dispatch({type: 'RESTORE_TOKEN', token: userToken, admin: adminBool});
     };
     bootstrapAsync();
   }, []);
@@ -90,8 +102,17 @@ const App: () => Node = ({navigation}) => {
             .then(response => {
               if (response.ok) {
                 response.json().then(data => {
+                  let isAdminBool = false;
+                  if (data.roles === 'admin') {
+                    isAdminBool = true;
+                    AsyncStorage.setItem('isAdmin', 'admin');
+                  }
                   AsyncStorage.setItem('userToken', data.accessToken);
-                  dispatch({type: 'SIGN_IN', token: data.accessToken});
+                  dispatch({
+                    type: 'SIGN_IN',
+                    token: data.accessToken,
+                    admin: isAdminBool,
+                  });
                 });
               } else {
                 Alert.alert('Error signing in: please try again');
@@ -151,10 +172,21 @@ const App: () => Node = ({navigation}) => {
     }),
     [],
   );
+
   return (
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
-        <Stack.Navigator>
+        <Stack.Navigator
+          screenOptions={{
+            headerStyle: {
+              backgroundColor: '#fff',
+            },
+            headerTintColor: '#05445E',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+            headerShadowVisible: false,
+          }}>
           {state.userToken == null ? (
             <>
               <Stack.Screen
@@ -169,9 +201,25 @@ const App: () => Node = ({navigation}) => {
               />
             </>
           ) : (
-            // User is signed in
             <>
-              <Stack.Screen name="Home" component={HomeScreen} />
+              {state.isAdmin == true ? (
+                <>
+                  <Stack.Screen
+                    name="AddLoan"
+                    component={AddLoanScreen}
+                    options={{title: 'Add Loan'}}
+                  />
+                  <Stack.Screen
+                    name="Admin"
+                    component={AdminScreen}
+                    options={{title: 'Dashboard'}}
+                  />
+                </>
+              ) : (
+                <>
+                  <Stack.Screen name="Home" component={HomeScreen} />
+                </>
+              )}
             </>
           )}
         </Stack.Navigator>

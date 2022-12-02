@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, Button} from 'react-native'
 import React from 'react'
 import { AuthContext } from "../../App"
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
   const { signOut } = React.useContext(AuthContext);
 
   return (
