@@ -17,9 +17,9 @@ LoanCHeap is a mobile app, for loans.
 ## Development
 LoanCheap is built with:
 
-- [ReactNative] - open source UI software framework for creating native mobile apps
-- [Nodejs] - open-source, cross-platform JavaScript runtime environment
-- [Mongodb] - app development platform that helps you build and grow apps and games users love
+- [ReactNative] - Open source UI software framework for creating native mobile apps
+- [Nodejs] - Open-source, cross-platform JavaScript runtime environment
+- [Mongodb] - A document database with the scalability and flexibility that you want with the querying and indexing that you need
 
 ## Installation
 
