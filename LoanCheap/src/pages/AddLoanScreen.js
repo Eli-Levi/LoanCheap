@@ -8,6 +8,7 @@ import {
   Button,
   Alert,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {useState} from 'react';
 import {AuthContext} from '../../App';
 import {addLoan} from '../services/addloan';
@@ -66,9 +67,20 @@ const AddLoanScreen = ({navigation}) => {
         <Button
           color="#05445E"
           title="Add Loan"
-          onPress={() =>
-            addLoan(loanName, amount, loanRepayment, info, interest)
-          }
+          onPress={async () => {
+            let data = await addLoan(
+              loanName,
+              amount,
+              loanRepayment,
+              info,
+              interest,
+            );
+            if (data === true) {
+              navigation.navigate('Admin');
+            } else {
+              Alert.alert("Please try again");
+            }
+          }}
         />
       </View>
       <Button title="Sign out" onPress={signOut} />

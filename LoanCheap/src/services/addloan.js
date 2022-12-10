@@ -9,7 +9,7 @@ function getUserToken() {
 }
 
 export async function addLoan(loanNam, amount, loanRepayment, info, interest) {
-  let token = await getUserToken();
+  let token;
   try {
     token = await AsyncStorage.getItem('userToken');
   } catch (e) {
@@ -33,21 +33,20 @@ export async function addLoan(loanNam, amount, loanRepayment, info, interest) {
     }),
   };
   try {
-    fetch(`http://10.0.0.19:8080/api/admin/addloan`, requestParameters)
+    let res = fetch(`http://10.0.0.19:8080/api/admin/addloan`, requestParameters)
       .then(response => {
         if (response.ok) {
-          response.json().then(data => {
-            console.log(JSON.stringify(data));
-            Alert.alert("Loan added successfully");
-          });
+          response.json().then(data => {});
+          console.log('loan added successfully');
+          return true;
         } else {
           console.log('Error creating loan');
-          Alert.alert("Please choose a differnet loan name")
         }
       })
       .catch(error => {
         console.log(error);
       });
+    return res;
   } catch (error) {
     console.log(error);
     console.error(error);

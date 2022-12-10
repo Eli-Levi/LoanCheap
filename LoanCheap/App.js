@@ -107,7 +107,7 @@ const App: () => Node = ({navigation}) => {
                     isAdminBool = true;
                     AsyncStorage.setItem('isAdmin', 'admin');
                   }
-                  AsyncStorage.setItem('userToken', data.accessToken);
+                  AsyncStorage.setItem('userToken', data.accessToken.toString());
                   dispatch({
                     type: 'SIGN_IN',
                     token: data.accessToken,
