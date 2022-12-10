@@ -27,4 +27,10 @@ module.exports = function (app) {
     [jwtAuthentication.checkToken, jwtAuthentication.checkAdmin, checkAddLoan.checkDuplicateLoanName],
     controller.adminAddLoan
   );
+
+  app.get(
+    "/api/admin/getalladminloans",
+    [jwtAuthentication.checkToken, jwtAuthentication.checkAdmin],
+    controller.adminGetAllLoans
+  );
 };

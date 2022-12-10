@@ -16,6 +16,22 @@ exports.adminBoard = (req, res) => {
   res.status(200).send("Admin");
 };
 
+exports.adminGetAllLoans = (req, res) => {
+  User.findById(req.userId, (err, user) => {
+    if (err) {
+      res.status(404).send({ error: "can't find user" });
+    } else {
+      AdminRole.findById(user.roleData, (err, admin) => {
+        if (err) {
+          res.status(404).send({ error: "can't find data" });
+        } else {
+          res.status(200).send(admin);
+        }
+      });
+    }
+  });
+};
+
 exports.adminAddLoan = (req, res) => {
   console.log(req.userId);
   User.findById(req.userId, (err, user) => {
