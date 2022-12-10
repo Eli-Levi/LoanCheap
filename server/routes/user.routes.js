@@ -1,4 +1,4 @@
-const { jwtAuthentication } = require("../middlewares");
+const { jwtAuthentication, checkAddLoan } = require("../middlewares");
 const controller = require("../controllers/user.controller");
 
 module.exports = function (app) {
@@ -20,5 +20,11 @@ module.exports = function (app) {
     "/api/test/admin",
     [jwtAuthentication.checkToken, jwtAuthentication.checkAdmin],
     controller.adminBoard
+  );
+
+  app.post(
+    "/api/admin/addloan",
+    [jwtAuthentication.checkToken, jwtAuthentication.checkAdmin, checkAddLoan.checkDuplicateLoanName],
+    controller.adminAddLoan
   );
 };

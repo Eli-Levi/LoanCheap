@@ -6,6 +6,7 @@ const User = db.user;
 const UserRole = db.role;
 const AdminRole = db.admin;
 const CostumerRole = db.costumer;
+const Loan = db.loan;
 
 exports.signup = (req, res) => {
   const num = Number(req.body.phoneNumber);
@@ -41,6 +42,7 @@ exports.signup = (req, res) => {
             const adminRole = new AdminRole({
               bank: req.body.bank,
               files: req.body.files,
+              loans: [],
             });
             adminRole.save((err) => {
               if (err) {
