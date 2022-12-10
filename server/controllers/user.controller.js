@@ -20,7 +20,7 @@ exports.adminAddLoan = (req, res) => {
   console.log(req.userId);
   User.findById(req.userId, (err, user) => {
     if (err) {
-      res.status(404).send("can't find user");
+      res.status(404).send({ error: "can't find user" });
     } else {
       const loan = new Loan({
         name: req.body.name,
@@ -45,7 +45,7 @@ exports.adminAddLoan = (req, res) => {
           if (err) {
             console.log(err);
           } else {
-            res.save()
+            res.save();
           }
         }
       );

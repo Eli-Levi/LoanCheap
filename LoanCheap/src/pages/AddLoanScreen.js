@@ -10,13 +10,13 @@ import {
 } from 'react-native';
 import React, {useState} from 'react';
 import {AuthContext} from '../../App';
+import {addLoan} from '../services/addloan';
 const AddLoanScreen = ({navigation}) => {
   const {signOut} = React.useContext(AuthContext);
-
   const [loanName, onChangeLoanName] = useState(null);
   const [amount, onChangeAmount] = useState(null);
   const [loanRepayment, onChangeLoanRepayment] = useState(null);
-  const [bank, onChangeBank] = useState(null);
+  const [info, onChangeInfo] = useState(null);
   const [interest, onChangeInterest] = useState(null);
   return (
     <View style={styles.container}>
@@ -53,11 +53,11 @@ const AddLoanScreen = ({navigation}) => {
           placeholder="Type the Loan Repayment"
           placeholderTextColor="#05445E"
         />
-        <Text style={styles.text}>Bank</Text>
+        <Text style={styles.text}>Loan Info</Text>
         <TextInput
           style={styles.input}
-          onChangeText={onChangeBank}
-          value={bank}
+          onChangeText={onChangeInfo}
+          value={info}
           placeholder="Type your bank name"
           placeholderTextColor="#05445E"
         />
@@ -66,7 +66,9 @@ const AddLoanScreen = ({navigation}) => {
         <Button
           color="#05445E"
           title="Add Loan"
-          // onPress={() => signIn({ email, password })}
+          onPress={() =>
+            addLoan(loanName, amount, loanRepayment, info, interest)
+          }
         />
       </View>
       <Button title="Sign out" onPress={signOut} />

@@ -5,12 +5,14 @@ const User = db.user;
 const UserRole = db.role;
 
 checkToken = (req, res, next) => {
+  console.log(req.headers);
   let token = req.headers["x-access-token"];
   if (!token) {
     return res.status(403).send({ message: "No token" });
   }
   jwt.verify(token, config.secret, (err, decoded) => {
     if (err) {
+      console.log(token);
       return res.status(401).send({ message: "can't log in" });
     }
     req.userId = decoded.id;
