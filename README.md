@@ -23,6 +23,9 @@ LoanCheap is built with:
 
 ## Installation
 
+JDK required: 11
+
+
 ## Authors
    Eli Levi, Dor Baram, Ibrahim Chahine
    
