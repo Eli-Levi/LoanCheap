@@ -26,6 +26,10 @@ LoanCheap is built with:
 JDK required: 11
 
 
+# Server
+```cd server```
+ Next run ```npm install```
+
 ## Authors
    Eli Levi, Dor Baram, Ibrahim Chahine
    
