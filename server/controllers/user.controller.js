@@ -21,11 +21,11 @@ exports.adminGetAllLoans = (req, res) => {
     if (err) {
       res.status(404).send({ error: "can't find user" });
     } else {
-      AdminRole.findById(user.roleData, (err, admin) => {
+      Loan.find({ admin: user.roleData }, (err, loan) => {
         if (err) {
           res.status(404).send({ error: "can't find data" });
         } else {
-          res.status(200).send(admin);
+          res.status(200).send(loan);
         }
       });
     }
