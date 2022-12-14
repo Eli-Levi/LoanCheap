@@ -23,18 +23,45 @@ LoanCheap is built with:
 
 ## Installation
 
-JDK required: 11
+To run this project on your pc you need to have NodeJs, Reactnative,  MongoDB, AndroidStudio, and JDK 11 installed.
+After installing these technologies, please do the following:
 
+Clone the repository:
+```sh
+https://github.com/Eli-Levi/LoanCheap.git
+cd LoanCheap
+```
 
-# Server
-```cd server```
- Next run ```npm install```
+Install the dependencies in the backend
+```sh
+cd LoanCheap/server
+npm install
+cd ../
+```
+Run the backend.
+```sh
+cd LoanCheap/server
+node index.js
+```
 
+Install the dependencies in the frontend
+```sh
+cd LoanCheap/LoanCheap
+npm install
+cd ../
+```
+Run the frontend, open two terminals.
+```sh
+cd LoanCheap/LoanCheap
+npm start
+```
+```sh
+cd LoanCheap/LoanCheap
+npm run android
+```
 ## Authors
    Eli Levi, Dor Baram, Ibrahim Chahine
    
    [ReactNative]: <https://reactnative.dev/>
    [Nodejs]: <https://nodejs.org/en/>
    [Mongodb]: <https://www.mongodb.com/>
-
-
