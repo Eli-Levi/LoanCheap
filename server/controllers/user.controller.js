@@ -17,23 +17,31 @@ exports.adminBoard = (req, res) => {
 };
 
 exports.adminGetAllLoans = (req, res) => {
+  const { page = 1, limit = 10 } = req.query;
   User.findById(req.userId, (err, user) => {
     if (err) {
       res.status(404).send({ error: "can't find user" });
     } else {
-      Loan.find({ admin: user.roleData }, (err, loan) => {
-        if (err) {
-          res.status(404).send({ error: "can't find data" });
-        } else {
-          res.status(200).send(loan);
-        }
-      });
+      Loan.find({ admin: user.roleData })
+        .limit(limit * 1)
+        .skip((page - 1) * limit)
+        .exec(async (err, loan) => {
+          if (err) {
+            res.status(404).send({ error: "can't find data" });
+          } else {
+            const count = await Loan.countDocuments({ admin: user.roleData });
+            res.status(200).send({
+              loans: loan,
+              totalPages: Math.ceil(count / limit),
+              currentPage: page,
+            });
+          }
+        });
     }
   });
 };
 
 exports.adminAddLoan = (req, res) => {
-  console.log(req.userId);
   User.findById(req.userId, (err, user) => {
     if (err) {
       res.status(404).send({ error: "can't find user" });
@@ -45,6 +53,8 @@ exports.adminAddLoan = (req, res) => {
         loanRepayment: req.body.loanRepayment,
         info: req.body.info,
         admin: user.roleData,
+        costumers: [],
+        requests: [],
       });
       loan.save((err) => {
         if (err) {
@@ -52,7 +62,6 @@ exports.adminAddLoan = (req, res) => {
           return;
         }
       });
-      console.log("adminrole=" + user.roleData._id);
       AdminRole.findByIdAndUpdate(
         user.roleData._id,
         { $push: { loans: loan._id } },

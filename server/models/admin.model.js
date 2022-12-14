@@ -9,6 +9,12 @@ const AdminRole = new mongoose.Schema({
       ref: "Loan",
     },
   ],
+  submittedRequests: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Request",
+    },
+  ],
 });
 
 module.exports = mongoose.model("AdminRole", AdminRole);

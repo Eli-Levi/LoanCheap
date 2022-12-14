@@ -8,5 +8,6 @@ db.role = require("./role.model");
 db.admin = require("./admin.model");
 db.costumer = require("./costumer.model");
 db.loan = require("./loan.model");
+db.request = require("./request.model");
 db.ROLES = ["user", "admin"];
 module.exports = db;

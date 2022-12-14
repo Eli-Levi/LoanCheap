@@ -16,6 +16,12 @@ const Loan = new mongoose.Schema({
       ref: "CostumerRole",
     },
   ],
+  requests: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Request",
+    },
+  ],
 });
 
 module.exports = mongoose.model("Loan", Loan);
