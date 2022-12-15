@@ -3,16 +3,8 @@ const fs = require("fs");
 const express = require("express");
 const app = express();
 const cors = require("cors");
+require('dotenv').config()
 
-const options = {
-  key: fs.readFileSync("127.0.0.1-key.pem"),
-  cert: fs.readFileSync("127.0.0.1.pem"),
-};
-
-// var corsOptions = {
-//   origin: "https://127.0.0.1:8080",
-// };
-// app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use((_, res, next) => {
@@ -34,17 +26,13 @@ app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
 
-// https.createServer(options, app).listen(PORT, () => {
-//   console.log("Server listening on port " + PORT);
-// });
-
 const db = require("./models");
 const UserRole = db.role;
 const dbConfig = require("./config/db.config.js");
 db.mongoose
   // .connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
   .connect(
-    "mongodb+srv://loancheap12345:Pi3IV55UNKgU01I4@universityapp.brx75x7.mongodb.net/test",
+    `mongodb+srv://loancheap12345:${process.env.PASS}@universityapp.brx75x7.mongodb.net/test`,
     {
       useNewUrlParser: true,
       useUnifiedTopology: true,
