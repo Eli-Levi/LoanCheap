@@ -42,10 +42,22 @@ isValidEmail= (req, res, next) => {
   next();
 };
 
+isValidPhone= (req, res, next) => {
+  // regex to check if phone number is in correct format (10 digits only)
+  const phoneRegex = /^\d{10}$/;
+    if (!phoneRegex.test(req.body.phoneNumber)){
+    res.status(400).send({
+      message: `${req.body.phoneNumber} Is an invalid phone format, should be 10 digits (05xxxxxxxx)`,
+    });
+    return;
+  };
+  next();
+};
 
 const checkSignUp = {
   isValidEmail,
   checkDuplicateEmail,
+  isValidPhone,
   checkRoles
 };
 

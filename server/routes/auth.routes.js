@@ -15,6 +15,7 @@ module.exports = function(app) {
     [
       checkSignUp.isValidEmail,
       checkSignUp.checkDuplicateEmail,
+      checkSignUp.isValidPhone,
       checkSignUp.checkRoles
     ],
     controller.signup
