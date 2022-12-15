@@ -53,6 +53,7 @@ exports.adminAddLoan = (req, res) => {
         loanRepayment: req.body.loanRepayment,
         info: req.body.info,
         admin: user.roleData,
+        status: true,
         costumers: [],
         requests: [],
       });

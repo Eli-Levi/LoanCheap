@@ -6,6 +6,7 @@ const Loan = new mongoose.Schema({
   interest: { type: Number, min: 0, max: 100 },
   loanRepayment: { type: Number, min: 0 },
   info: String,
+  status: Boolean,
   admin: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "AdminRole",
