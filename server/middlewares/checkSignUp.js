@@ -30,7 +30,21 @@ checkRoles = (req, res, next) => {
   next();
 };
 
+isValidEmail= (req, res, next) => {
+  // regex to check if email is in correct format
+  const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  if (!emailRegex.test(req.body.email)){
+    res.status(400).send({
+      message: `${req.body.email} Is an invalid email format`,
+    });
+    return;
+  };
+  next();
+};
+
+
 const checkSignUp = {
+  isValidEmail,
   checkDuplicateEmail,
   checkRoles
 };
