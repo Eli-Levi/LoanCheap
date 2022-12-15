@@ -21,8 +21,7 @@ import AdminScreen from './src/pages/AdminScreen';
 import AddLoanScreen from './src/pages/AddLoanScreen';
 import axios from 'axios';
 // change to you'r ip
-const API_URL =
-  Platform.OS === 'ios' ? 'http://localhost:8080' : 'http://10.0.0.19:8080';
+const API_URL = 'http://10.0.0.19:8080';
 
 const Stack = createNativeStackNavigator();
 const AuthContext = React.createContext();
@@ -107,7 +106,10 @@ const App: () => Node = ({navigation}) => {
                     isAdminBool = true;
                     AsyncStorage.setItem('isAdmin', 'admin');
                   }
-                  AsyncStorage.setItem('userToken', data.accessToken.toString());
+                  AsyncStorage.setItem(
+                    'userToken',
+                    data.accessToken.toString(),
+                  );
                   dispatch({
                     type: 'SIGN_IN',
                     token: data.accessToken,
