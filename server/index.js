@@ -42,10 +42,14 @@ const db = require("./models");
 const UserRole = db.role;
 const dbConfig = require("./config/db.config.js");
 db.mongoose
-  .connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  // .connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
+  .connect(
+    "mongodb+srv://loancheap12345:Pi3IV55UNKgU01I4@universityapp.brx75x7.mongodb.net/test",
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }
+  )
   .then(() => {
     console.log("connected");
     initial();
