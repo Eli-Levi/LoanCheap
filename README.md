@@ -1,7 +1,7 @@
 # LoanCheap
 ## _The source for the most affordable loans_
 
-LoanCHeap is a mobile app, for loans.
+LoanCheap is a mobile app, for loans.
 
 - Log in and find the best loan opportunities from the best banks
 - Send a request and the bank will call you
