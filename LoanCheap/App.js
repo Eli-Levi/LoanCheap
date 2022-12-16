@@ -207,14 +207,14 @@ const App: () => Node = ({navigation}) => {
               {state.isAdmin == true ? (
                 <>
                   <Stack.Screen
-                    name="AddLoan"
-                    component={AddLoanScreen}
-                    options={{title: 'Add Loan'}}
-                  />
-                  <Stack.Screen
                     name="Admin"
                     component={AdminScreen}
                     options={{title: 'Dashboard'}}
+                  />
+                  <Stack.Screen
+                    name="AddLoan"
+                    component={AddLoanScreen}
+                    options={{title: 'Add Loan'}}
                   />
                 </>
               ) : (
