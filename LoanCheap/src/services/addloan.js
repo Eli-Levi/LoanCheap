@@ -1,5 +1,5 @@
 import {Alert} from 'react-native';
-import API_URL from '../constants/api';
+import {API_URL} from '../constants/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function getUserToken() {
@@ -32,8 +32,9 @@ export async function addLoan(loanNam, amount, loanRepayment, info, interest) {
       info: info,
     }),
   };
+  console.log(API_URL);
   try {
-    let res = fetch(`http://10.0.0.19:8080/api/admin/addloan`, requestParameters)
+    let res = fetch(`${API_URL}/api/admin/addloan`, requestParameters)
       .then(response => {
         if (response.ok) {
           response.json().then(data => {});
