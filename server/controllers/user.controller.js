@@ -16,6 +16,32 @@ exports.adminBoard = (req, res) => {
   res.status(200).send("Admin");
 };
 
+exports.adminEditLoan = (req, res) => {
+  User.findById(req.userId, (err, user) => {
+    if (err) {
+      res.status(404).send({ error: "can't find user" });
+    } else {
+      Loan.findById(req.body.loanId).exec(async (err, loan) => {
+        if (err) {
+          res.status(404).send({ error: "can't find data" });
+        } else {
+          const { name, amount, interest, loanRepayment, info, status } =
+            req.body.newData;
+          loan.name = name;
+          loan.amount = amount;
+          loan.loanRepayment = loanRepayment;
+          loan.info = info;
+          loan.status = status;
+          loan.save();
+          res.status(200).send({
+            loan: loan,
+          });
+        }
+      });
+    }
+  });
+};
+
 exports.adminGetAllLoans = (req, res) => {
   const { page = 1, limit = 10 } = req.query;
   User.findById(req.userId, (err, user) => {

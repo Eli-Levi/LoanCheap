@@ -24,10 +24,19 @@ module.exports = function (app) {
 
   app.post(
     "/api/admin/addloan",
-    [jwtAuthentication.checkToken, jwtAuthentication.checkAdmin, checkAddLoan.checkDuplicateLoanName],
+    [
+      jwtAuthentication.checkToken,
+      jwtAuthentication.checkAdmin,
+      checkAddLoan.checkDuplicateLoanName,
+    ],
     controller.adminAddLoan
   );
 
+  app.put(
+    "/api/admin/editloan",
+    [jwtAuthentication.checkToken, jwtAuthentication.checkAdmin],
+    controller.adminEditLoan
+  );
   app.get(
     "/api/admin/getalladminloans",
     [jwtAuthentication.checkToken, jwtAuthentication.checkAdmin],
