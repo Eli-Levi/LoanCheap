@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   ScrollView,
+  Button,
 } from "react-native";
 import { Table, Row, Rows } from "react-native-table-component";
 import React, { useState, useEffect, useCallback } from "react";
@@ -15,11 +16,11 @@ import EditElement from "../components/EditElement";
 
 // EditScreen
 const AdminScreen = ({ navigation }) => {
-  const [currPage, setCurrentPage] = useState(null);
-  const [totalPages, setTotalPages] = useState(null);
+  const [currPageLoans, setCurrentPageLoans] = useState(1);
+  const [totalPagesLoans, setTotalPagesLoans] = useState(null);
   const [loans, setLoans] = useState(null);
   // let data = ;
-  const [data, setData] = useState({
+  const [dataLoans, setDataLoans] = useState({
     tableHead: ["Name", "Amount", "Edit"],
     tableData: [],
   });
@@ -28,12 +29,12 @@ const AdminScreen = ({ navigation }) => {
     let currPageTemp = await AsyncStorage.getItem("AdminScreenCurrPage");
     console.log(currPageTemp);
     if (currPageTemp === null) {
-      setCurrentPage(1);
+      setCurrentPageLoans(1);
     }
   };
   const getFetchData = async (currentPage) => {
     let fetchData = await getalladminloans(currentPage, 5);
-    setTotalPages(fetchData.totalPages || 0);
+    setTotalPagesLoans(fetchData.totalPages || 0);
     length = loans?.length || 0;
     let temp = [];
     for (let index = 0; index < fetchData.loans.length; index++) {
@@ -45,20 +46,21 @@ const AdminScreen = ({ navigation }) => {
       ]);
     }
     setLoans(fetchData.loans || 0);
-    setData({
+    setDataLoans({
       tableHead: ["Name", "Amount", "Edit"],
       tableData: temp,
     });
+    setCurrentPageLoans(fetchData.currentPage);
     console.log("fetch successfully");
   };
   useEffect(() => {
-    getFetchData(currPage);
-  }, [currPage]);
+    getFetchData(currPageLoans);
+  }, [currPageLoans]);
   return (
     <>
       <SafeAreaView style={styles.container}>
         <ScrollView>
-          <Text style={styles.baseText}>Added loans</Text>
+          <Text style={styles.baseText}>Added Loans</Text>
           <Table
             borderStyle={{
               ...{
@@ -67,13 +69,49 @@ const AdminScreen = ({ navigation }) => {
               },
             }}
           >
-            <Row data={data?.tableHead} style={{ ...styles.head }} />
+            <Row data={dataLoans?.tableHead} style={{ ...styles.head }} />
             <Rows
-              data={data?.tableData}
+              data={dataLoans?.tableData}
               style={{ ...styles.head }}
               textStyle={{ ...styles.text }}
             />
           </Table>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "stretch",
+            }}
+          >
+            <TouchableOpacity
+              onPress={() => {
+                let currentPage = currPageLoans;
+                currentPage--;
+                if (currentPage > 0 && currentPage <= totalPages) {
+                  setCurrentPageLoans(currentPage);
+                }
+              }}
+            >
+              <View style={styles.text}>
+                <Text style={styles.btn}>Prev</Text>
+              </View>
+            </TouchableOpacity>
+            <Text style={{ fontSize: 20 }}>{currPageLoans}</Text>
+            <TouchableOpacity
+              onPress={() => {
+                let currentPage = currPageLoans;
+                currentPage++;
+                if (currentPage <= totalPages) {
+                  setCurrentPageLoans(currentPage);
+                }
+              }}
+            >
+              <View style={styles.text}>
+                <Text style={styles.btn}>Next</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
         </ScrollView>
         <FAB
           visible={true}
@@ -93,7 +131,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    paddingTop: 30,
+    paddingTop: 10,
     backgroundColor: "#fff",
   },
   baseText: {
