@@ -1,6 +1,6 @@
-import React, {useState, useEffect} from 'react';
-import type {Node} from 'react';
-import 'react-native-gesture-handler';
+import React, { useState, useEffect } from "react";
+import type { Node } from "react";
+import "react-native-gesture-handler";
 import {
   SafeAreaView,
   ScrollView,
@@ -10,42 +10,43 @@ import {
   useColorScheme,
   View,
   Alert,
-} from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import LoginScreen from './src/pages/LoginScreen';
-import HomeScreen from './src/pages/HomeScreen';
-import SignUpScreen from './src/pages/SignUpScreen';
-import AdminScreen from './src/pages/AdminScreen';
-import AddLoanScreen from './src/pages/AddLoanScreen';
-import axios from 'axios';
+} from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import LoginScreen from "./src/pages/LoginScreen";
+import HomeScreen from "./src/pages/HomeScreen";
+import SignUpScreen from "./src/pages/SignUpScreen";
+import AdminScreen from "./src/pages/AdminScreen";
+import AddLoanScreen from "./src/pages/AddLoanScreen";
+import EditScreen from "./src/pages/EditScreen";
+import axios from "axios";
 // change to you'r ip
-const API_URL = 'http://10.0.0.19:8080';
+const API_URL = "http://10.0.0.19:8080";
 
 const Stack = createNativeStackNavigator();
 const AuthContext = React.createContext();
-export {AuthContext};
+export { AuthContext };
 
-const App: () => Node = ({navigation}) => {
+const App: () => Node = ({ navigation }) => {
   const [state, dispatch] = React.useReducer(
     (prevState, action) => {
       switch (action.type) {
-        case 'RESTORE_TOKEN':
+        case "RESTORE_TOKEN":
           return {
             ...prevState,
             userToken: action.token,
             isLoading: false,
             isAdmin: action.admin,
           };
-        case 'SIGN_IN':
+        case "SIGN_IN":
           return {
             ...prevState,
             isSignout: false,
             userToken: action.token,
             isAdmin: action.admin,
           };
-        case 'SIGN_OUT':
+        case "SIGN_OUT":
           return {
             ...prevState,
             isSignout: true,
@@ -59,7 +60,7 @@ const App: () => Node = ({navigation}) => {
       isSignout: false,
       userToken: null,
       isAdmin: false,
-    },
+    }
   );
 
   React.useEffect(() => {
@@ -69,58 +70,58 @@ const App: () => Node = ({navigation}) => {
       let admin;
       let adminBool;
       try {
-        userToken = await AsyncStorage.getItem('userToken');
-        admin = await AsyncStorage.getItem('isAdmin');
-        if (admin == 'admin') {
+        userToken = await AsyncStorage.getItem("userToken");
+        admin = await AsyncStorage.getItem("isAdmin");
+        if (admin == "admin") {
           adminBool = true;
         }
       } catch (e) {
         // Restoring token failed
       }
       // TODO: validate the token.
-      dispatch({type: 'RESTORE_TOKEN', token: userToken, admin: adminBool});
+      dispatch({ type: "RESTORE_TOKEN", token: userToken, admin: adminBool });
     };
     bootstrapAsync();
   }, []);
 
   const authContext = React.useMemo(
     () => ({
-      signIn: async data => {
+      signIn: async (data) => {
         // In a production app, we need to send some data (usually username, password) to server and get a token
         // We will also need to handle errors if sign in failed
         const requestParameters = {
-          method: 'POST',
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
-          body: JSON.stringify({email: data.email, password: data.password}),
+          body: JSON.stringify({ email: data.email, password: data.password }),
         };
         let token;
         try {
           await fetch(`${API_URL}/api/auth/signin`, requestParameters)
-            .then(response => {
+            .then((response) => {
               if (response.ok) {
-                response.json().then(data => {
+                response.json().then((data) => {
                   let isAdminBool = false;
-                  if (data.roles === 'admin') {
+                  if (data.roles === "admin") {
                     isAdminBool = true;
-                    AsyncStorage.setItem('isAdmin', 'admin');
+                    AsyncStorage.setItem("isAdmin", "admin");
                   }
                   AsyncStorage.setItem(
-                    'userToken',
-                    data.accessToken.toString(),
+                    "userToken",
+                    data.accessToken.toString()
                   );
                   dispatch({
-                    type: 'SIGN_IN',
+                    type: "SIGN_IN",
                     token: data.accessToken,
                     admin: isAdminBool,
                   });
                 });
               } else {
-                Alert.alert('Error signing in: please try again');
+                Alert.alert("Error signing in: please try again");
               }
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
             });
         } catch (error) {
@@ -128,14 +129,14 @@ const App: () => Node = ({navigation}) => {
         }
       },
       signOut: async () => {
-        await AsyncStorage.removeItem('userToken');
-        dispatch({type: 'SIGN_OUT'});
+        await AsyncStorage.removeItem("userToken");
+        dispatch({ type: "SIGN_OUT" });
       },
-      signUp: async data => {
+      signUp: async (data) => {
         const requestParameters = {
-          method: 'POST',
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({
             name: data.name,
@@ -149,21 +150,21 @@ const App: () => Node = ({navigation}) => {
         };
         try {
           await fetch(`${API_URL}/api/auth/signup`, requestParameters)
-            .then(response => {
+            .then((response) => {
               Alert.alert(JSON.stringify(response));
               if (response.ok) {
-                response.json().then(data => {
+                response.json().then((data) => {
                   Alert.alert(
-                    'account created successfully, please go  back to log in',
-                    JSON.stringify(data),
+                    "account created successfully, please go  back to log in",
+                    JSON.stringify(data)
                   );
-                  dispatch({type: 'SIGN_IN', token: null});
+                  dispatch({ type: "SIGN_IN", token: null });
                 });
               } else {
-                Alert.alert('Error signing up: please try again');
+                Alert.alert("Error signing up: please try again");
               }
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
             });
         } catch (error) {
@@ -172,7 +173,7 @@ const App: () => Node = ({navigation}) => {
         }
       },
     }),
-    [],
+    []
   );
 
   return (
@@ -181,25 +182,26 @@ const App: () => Node = ({navigation}) => {
         <Stack.Navigator
           screenOptions={{
             headerStyle: {
-              backgroundColor: '#fff',
+              backgroundColor: "#fff",
             },
-            headerTintColor: '#05445E',
+            headerTintColor: "#05445E",
             headerTitleStyle: {
-              fontWeight: 'bold',
+              fontWeight: "bold",
             },
             headerShadowVisible: false,
-          }}>
+          }}
+        >
           {state.userToken == null ? (
             <>
               <Stack.Screen
                 name="SignIn"
                 component={LoginScreen}
-                options={{headerShown: false}}
+                options={{ headerShown: false }}
               />
               <Stack.Screen
                 name="SignUp"
                 component={SignUpScreen}
-                options={{headerShown: false}}
+                options={{ headerShown: false }}
               />
             </>
           ) : (
@@ -209,12 +211,17 @@ const App: () => Node = ({navigation}) => {
                   <Stack.Screen
                     name="Admin"
                     component={AdminScreen}
-                    options={{title: 'Dashboard'}}
+                    options={{ title: "Dashboard" }}
                   />
                   <Stack.Screen
                     name="AddLoan"
                     component={AddLoanScreen}
-                    options={{title: 'Add Loan'}}
+                    options={{ title: "Add Loan" }}
+                  />
+                  <Stack.Screen
+                    name="EditScreen"
+                    component={EditScreen}
+                    options={{ title: "Edit Loan" }}
                   />
                 </>
               ) : (
