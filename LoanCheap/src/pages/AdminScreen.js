@@ -24,7 +24,7 @@ const AdminScreen = ({navigation}) => {
   return (
     <>
       <SafeAreaView style={styles.container}>
-        <ScrollView >
+        <ScrollView>
           <Table borderStyle={{borderWidth: 2, borderColor: '#c8e1ff'}}>
             <Row
               data={data.tableHead}
