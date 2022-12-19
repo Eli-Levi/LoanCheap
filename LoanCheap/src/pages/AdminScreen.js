@@ -7,14 +7,15 @@ import {
   ScrollView,
 } from "react-native";
 import { Table, Row, Rows } from "react-native-table-component";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { FAB } from "@rneui/themed";
 import { getalladminloans } from "../services/admin";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import EditElement from "../components/EditElement";
 
 // EditScreen
 const AdminScreen = ({ navigation }) => {
-  const [currPage, setCurrentPage] = useState(1);
+  const [currPage, setCurrentPage] = useState(null);
   const [totalPages, setTotalPages] = useState(null);
   const [loans, setLoans] = useState(null);
   // let data = ;
@@ -22,17 +23,6 @@ const AdminScreen = ({ navigation }) => {
     tableHead: ["Name", "Amount", "Edit"],
     tableData: [],
   });
-  const EditELement = ({ data }) => {
-    return (
-      <TouchableOpacity
-        onPress={() => navigation.navigate("EditScreen", { loan: data.loanId })}
-      >
-        <View style={styles.text}>
-          <Text style={styles.btn}>Edit</Text>
-        </View>
-      </TouchableOpacity>
-    );
-  };
 
   const get = async () => {
     let currPageTemp = await AsyncStorage.getItem("AdminScreenCurrPage");
@@ -41,21 +31,20 @@ const AdminScreen = ({ navigation }) => {
       setCurrentPage(1);
     }
   };
-
-  const getFetchData = async () => {
-    let fetchData = await getalladminloans(currPage, 5);
-    setTotalPages(fetchData.totalPages);
-    setLoans(fetchData.loans);
-    length = loans.length || 0;
+  const getFetchData = async (currentPage) => {
+    let fetchData = await getalladminloans(currentPage, 5);
+    setTotalPages(fetchData.totalPages || 0);
+    length = loans?.length || 0;
     let temp = [];
-    for (let index = 0; index < length; index++) {
-      let loanId = loans[index]?._id;
+    for (let index = 0; index < fetchData.loans.length; index++) {
+      let loanId = fetchData.loans[index]?._id;
       temp.push([
-        loans[index]?.name,
-        loans[index]?.amount,
-        <EditELement data={loanId} />,
+        fetchData.loans[index]?.name,
+        fetchData.loans[index]?.amount,
+        <EditElement data={loanId} />,
       ]);
     }
+    setLoans(fetchData.loans || 0);
     setData({
       tableHead: ["Name", "Amount", "Edit"],
       tableData: temp,
@@ -63,16 +52,27 @@ const AdminScreen = ({ navigation }) => {
     console.log("fetch successfully");
   };
   useEffect(() => {
-    getFetchData();
-  }, []);
+    getFetchData(currPage);
+  }, [currPage]);
   return (
     <>
       <SafeAreaView style={styles.container}>
         <ScrollView>
           <Text style={styles.baseText}>Added loans</Text>
-          <Table borderStyle={{ borderWidth: 2, borderColor: "#c8e1ff" }}>
-            <Row data={data.tableHead} style={styles.head} />
-            <Rows data={data.tableData} style={styles.head} />
+          <Table
+            borderStyle={{
+              ...{
+                borderWidth: 2,
+                borderColor: "#c8e1ff",
+              },
+            }}
+          >
+            <Row data={data?.tableHead} style={{ ...styles.head }} />
+            <Rows
+              data={data?.tableData}
+              style={{ ...styles.head }}
+              textStyle={{ ...styles.text }}
+            />
           </Table>
         </ScrollView>
         <FAB
