@@ -107,3 +107,38 @@ exports.adminAddLoan = (req, res) => {
     }
   });
 };
+
+exports.costumerGetAllLoans = (req, res) => {
+  const { page = 1, limit = 10 } = req.query;
+  let data = {
+    name: req.body.name,
+    amount: req.body.amout,
+    interest: req.body.interest,
+    loanRepayment: req.body.loanRepayment,
+  };
+  Object.keys(data).forEach((key) => {
+    if (data[key] === null || data[key] === undefined) {
+      delete data[key];
+    }
+  });
+  Loan.find(data)
+    .limit(limit * 1)
+    .skip((page - 1) * limit)
+    .exec(async (err, loan) => {
+      if (err) {
+        res.status(404).send({ error: "can't find data" });
+      } else {
+        const count = await Loan.countDocuments({
+          name: req.body.name,
+          amount: req.body.amout,
+          interest: req.body.interest,
+          loanRepayment: req.body.loanRepayment,
+        });
+        res.status(200).send({
+          loans: loan,
+          totalPages: Math.ceil(count / limit),
+          currentPage: page,
+        });
+      }
+    });
+};

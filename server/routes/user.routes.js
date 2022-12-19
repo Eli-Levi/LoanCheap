@@ -17,6 +17,12 @@ module.exports = function (app) {
   );
 
   app.get(
+    "/api/user/findloans",
+    [jwtAuthentication.checkToken, jwtAuthentication.checkUser],
+    controller.costumerGetAllLoans
+  );
+
+  app.get(
     "/api/test/admin",
     [jwtAuthentication.checkToken, jwtAuthentication.checkAdmin],
     controller.adminBoard
