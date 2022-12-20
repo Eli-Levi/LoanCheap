@@ -72,8 +72,11 @@ const App: () => Node = ({ navigation }) => {
       try {
         userToken = await AsyncStorage.getItem("userToken");
         admin = await AsyncStorage.getItem("isAdmin");
-        if (admin == "admin") {
+        console.log(admin);
+        if (admin === "admin") {
           adminBool = true;
+        } else {
+          adminBool = false;
         }
       } catch (e) {
         // Restoring token failed
@@ -130,6 +133,7 @@ const App: () => Node = ({ navigation }) => {
       },
       signOut: async () => {
         await AsyncStorage.removeItem("userToken");
+        await AsyncStorage.removeItem("isAdmin");
         dispatch({ type: "SIGN_OUT" });
       },
       signUp: async (data) => {

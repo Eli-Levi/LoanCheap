@@ -112,6 +112,7 @@ const AdminScreen = ({ navigation }) => {
               </View>
             </TouchableOpacity>
           </View>
+          <Text style={styles.baseText}>Requests</Text>
         </ScrollView>
         <FAB
           visible={true}

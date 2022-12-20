@@ -16,7 +16,7 @@ module.exports = function (app) {
     controller.userBoard
   );
 
-  app.get(
+  app.post(
     "/api/user/findloans",
     [jwtAuthentication.checkToken, jwtAuthentication.checkUser],
     controller.costumerGetAllLoans
