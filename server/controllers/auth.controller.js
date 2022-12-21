@@ -52,7 +52,7 @@ exports.signup = (req, res) => {
             });
             user.roleData = adminRole;
           } else {
-            const costumer = new CostumerRole({ SubmittedRequests: [] });
+            const costumer = new CostumerRole({ SubmittedRequests: [], user: user });
             costumer.save((err) => {
               if (err) {
                 res.status(401).send({ error: err });

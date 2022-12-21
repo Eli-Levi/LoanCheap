@@ -21,7 +21,7 @@ const UserHomeScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      {/* <Button title="Sign out" onPress={signOut} /> */}
+      <Button title="Sign out" onPress={signOut} />
       <Text style={styles.text}>Table for submited requests</Text>
       <Dialog isVisible={search} onBackdropPress={() => setSearch(false)}>
         <Dialog.Title title="Search For Loans" />

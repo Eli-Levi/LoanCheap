@@ -13,7 +13,7 @@ const Request = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "CostumerRole",
   },
-  status: Boolean,
+  status: String,
 });
 
 module.exports = mongoose.model("Request", Request);

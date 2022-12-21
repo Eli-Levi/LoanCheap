@@ -22,6 +22,12 @@ module.exports = function (app) {
     controller.costumerGetAllLoans
   );
 
+  app.get(
+    "/api/user/getallrequests",
+    [jwtAuthentication.checkToken, jwtAuthentication.checkUser],
+    controller.costumerGetAllRequests
+  );
+  
   app.post(
     "/api/user/request",
     [jwtAuthentication.checkToken, jwtAuthentication.checkUser],
@@ -54,4 +60,11 @@ module.exports = function (app) {
     [jwtAuthentication.checkToken, jwtAuthentication.checkAdmin],
     controller.adminGetAllLoans
   );
+
+  app.get(
+    "/api/admin/getallrequests",
+    [jwtAuthentication.checkToken, jwtAuthentication.checkAdmin],
+    controller.adminGetAllRequests
+  );
+  
 };

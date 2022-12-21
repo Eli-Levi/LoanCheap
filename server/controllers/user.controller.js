@@ -165,6 +165,7 @@ exports.costumerRequest = (req, res) => {
                 admin: admin,
                 loan: loan,
                 costumers: costumer,
+                status: "Pending",
               });
               request.save((err) => {
                 if (err) {
@@ -177,6 +178,60 @@ exports.costumerRequest = (req, res) => {
           });
         }
       });
+    }
+  });
+};
+
+exports.costumerGetAllRequests = (req, res) => {
+  const { page = 1, limit = 10 } = req.query;
+  User.findById(req.userId, (err, user) => {
+    if (err) {
+      res.status(404).send({ error: "can't find user" });
+    } else {
+      Request.find({ costumers: user.roleData })
+        .limit(limit * 1)
+        .skip((page - 1) * limit)
+        .exec(async (err, request) => {
+          if (err) {
+            res.status(404).send({ error: "can't find data" });
+          } else {
+            const count = await Request.countDocuments({
+              costumers: user.roleData,
+            });
+            res.status(200).send({
+              requests: request,
+              totalPages: Math.ceil(count / limit),
+              currentPage: page,
+            });
+          }
+        });
+    }
+  });
+};
+
+exports.adminGetAllRequests = (req, res) => {
+  const { page = 1, limit = 10 } = req.query;
+  User.findById(req.userId, (err, user) => {
+    if (err) {
+      res.status(404).send({ error: "can't find user" });
+    } else {
+      Request.find({ admin: user.roleData })
+        .limit(limit * 1)
+        .skip((page - 1) * limit)
+        .exec(async (err, request) => {
+          if (err) {
+            res.status(404).send({ error: "can't find data" });
+          } else {
+            const count = await Request.countDocuments({
+              admin: user.roleData,
+            });
+            res.status(200).send({
+              requests: request,
+              totalPages: Math.ceil(count / limit),
+              currentPage: page,
+            });
+          }
+        });
     }
   });
 };
