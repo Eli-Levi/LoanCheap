@@ -15,6 +15,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LoginScreen from "./src/pages/LoginScreen";
+import ProfileHeader from "./src/components/ProfileHeader";
 import UserHomeScreen from "./src/pages/UserHomeScreen";
 import SignUpScreen from "./src/pages/SignUpScreen";
 import FindLoansScreen from "./src/pages/FindLoansScreen";
@@ -195,6 +196,7 @@ const App: () => Node = ({ navigation }) => {
               fontWeight: "bold",
             },
             headerShadowVisible: false,
+            headerRight: () => <ProfileHeader/>
           }}
         >
           {state.userToken == null ? (

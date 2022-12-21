@@ -14,6 +14,9 @@ const Request = new mongoose.Schema({
     ref: "CostumerRole",
   },
   status: String,
+  amount: Number,
+  loanName: String,
+  
 });
 
 module.exports = mongoose.model("Request", Request);

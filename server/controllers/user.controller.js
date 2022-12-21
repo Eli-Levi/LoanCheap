@@ -125,12 +125,12 @@ exports.costumerGetAllLoans = (req, res) => {
       loanRepayment: req.body.loanRepayment,
       amount: { $gte: data.min, $lte: data.max },
     };
-    Object.keys(data).forEach((key) => {
-      if (data[key] === null || data[key] === undefined) {
-        delete data[key];
-      }
-    });
   }
+  Object.keys(data).forEach((key) => {
+    if (data[key] === null || data[key] === undefined) {
+      delete data[key];
+    }
+  });
   Loan.find(data)
     .limit(limit * 1)
     .skip((page - 1) * limit)
@@ -166,6 +166,8 @@ exports.costumerRequest = (req, res) => {
                 loan: loan,
                 costumers: costumer,
                 status: "Pending",
+                amount: loan.amount,
+                loanName: loan.name,
               });
               request.save((err) => {
                 if (err) {

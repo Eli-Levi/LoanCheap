@@ -2,7 +2,13 @@ import { Alert } from "react-native";
 import { API_URL } from "../constants/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export async function getalladminloans(currPage, limit) {
+export async function updateLoan(
+  loanNam,
+  amount,
+  loanRepayment,
+  info,
+  interest
+) {
   let token;
   try {
     token = await AsyncStorage.getItem("userToken");
@@ -13,26 +19,29 @@ export async function getalladminloans(currPage, limit) {
     return;
   }
   const requestParameters = {
-    method: "GET",
+    method: "PUT",
     headers: {
       "Content-Type": "application/json",
       "x-access-token": token,
     },
+    body: JSON.stringify({
+      name: loanNam,
+      amount: amount,
+      interest: interest,
+      loanRepayment: loanRepayment,
+      info: info,
+    }),
   };
+  console.log(API_URL);
   try {
-    const params = { page: currPage, limit: limit };
-    let res = fetch(
-      `${API_URL}/api/admin/getalladminloans?page=${currPage}&limit=${limit}`,
-      requestParameters
-    )
+    let res = fetch(`${API_URL}/api/admin/editloan`, requestParameters)
       .then((response) => {
         if (response.ok) {
-          let res = response.json().then((data) => {
-            return data;
-          });
-          return res;
+          response.json().then((data) => {});
+          console.log("loan updated successfully");
+          return true;
         } else {
-          console.log("Error fetching loan");
+          console.log("Error updating loan");
         }
       })
       .catch((error) => {

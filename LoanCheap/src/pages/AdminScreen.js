@@ -25,13 +25,6 @@ const AdminScreen = ({ navigation }) => {
     tableData: [],
   });
 
-  const get = async () => {
-    let currPageTemp = await AsyncStorage.getItem("AdminScreenCurrPage");
-    console.log(currPageTemp);
-    if (currPageTemp === null) {
-      setCurrentPageLoans(1);
-    }
-  };
   const getFetchData = async (currentPage) => {
     let fetchData = await getalladminloans(currentPage, 5);
     setTotalPagesLoans(fetchData.totalPages || 0);

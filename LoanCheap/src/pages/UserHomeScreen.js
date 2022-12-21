@@ -4,25 +4,116 @@ import {
   View,
   Button,
   FlatList,
+  ScrollView,
   TextInput,
+  TouchableOpacity,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { AuthContext } from "../../App";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { Dialog, Input, CheckBox, ListItem, Avatar, FAB } from "@rneui/themed";
+import { Table, Row, Rows } from "react-native-table-component";
+import { costumerGetAllRequests } from "../services/costumerrequest";
+
 const UserHomeScreen = ({ navigation }) => {
-  const { signOut } = React.useContext(AuthContext);
   const [search, setSearch] = useState(false);
-  const [ name, setName ] = useState(null);
-  const [ min, setMin ] = useState(null);
-  const [ max, setMax ] = useState(null);
-  const [ interest, setInterest ] = useState(null);
-  const [ loanRepayment, setLoanRepayment ] = useState(null);
+  const [name, setName] = useState(null);
+  const [min, setMin] = useState(null);
+  const [max, setMax] = useState(null);
+  const [interest, setInterest] = useState(null);
+  const [loanRepayment, setLoanRepayment] = useState(null);
+  const [currPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(null);
+  const [requests, setRequests] = useState(null);
+  const [table, setTable] = useState({
+    tableHead: ["Name", "Amount", "Request Status"],
+    tableData: [],
+  });
+
+  const getFetchData = async (currentPage) => {
+    try {
+      let fetchData = await costumerGetAllRequests(currentPage, 10);
+      setTotalPages(fetchData?.totalPages || 0);
+      let temp = [];
+      for (let index = 0; index < fetchData?.requests?.length; index++) {
+        let loanId = fetchData.requests[index]?._id;
+        temp.push([
+          fetchData?.requests[index]?.loanName,
+          fetchData?.requests[index]?.amount,
+          fetchData?.requests[index]?.status,
+        ]);
+      }
+      setRequests(fetchData?.requests || 0);
+      setTable({
+        tableHead: ["Name", "Amount", "Request Status"],
+        tableData: temp,
+      });
+      setCurrentPage(fetchData?.currentPage);
+      console.log("fetch successfully");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    getFetchData(currPage);
+  }, [currPage]);
 
   return (
     <View style={styles.container}>
-      <Button title="Sign out" onPress={signOut} />
-      <Text style={styles.text}>Table for submited requests</Text>
+      <ScrollView>
+        <Text style={styles.baseText}>Requests</Text>
+        <Table
+          borderStyle={{
+            ...{
+              borderWidth: 2,
+              borderColor: "#c8e1ff",
+            },
+          }}
+        >
+          <Row data={table?.tableHead} style={{ ...styles.head }} />
+          <Rows
+            data={table?.tableData}
+            style={{ ...styles.head }}
+            textStyle={{ ...styles.text }}
+          />
+        </Table>
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "stretch",
+          }}
+        >
+          <TouchableOpacity
+            onPress={() => {
+              let currentPage = currPage;
+              currentPage--;
+              if (currentPage > 0 && currentPage <= totalPages) {
+                setCurrentPage(currentPage);
+              }
+            }}
+          >
+            <View style={styles.text}>
+              <Text style={styles.btn}>Prev</Text>
+            </View>
+          </TouchableOpacity>
+          <Text style={{ fontSize: 20 }}>{currPage}</Text>
+          <TouchableOpacity
+            onPress={() => {
+              let currentPage = currPage;
+              currentPage++;
+              if (currentPage <= totalPages) {
+                setCurrentPage(currentPage);
+              }
+            }}
+          >
+            <View style={styles.text}>
+              <Text style={styles.btn}>Next</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
       <Dialog isVisible={search} onBackdropPress={() => setSearch(false)}>
         <Dialog.Title title="Search For Loans" />
         <Input onChangeText={setName} value={name} placeholder="Loan Name" />
@@ -54,7 +145,7 @@ const UserHomeScreen = ({ navigation }) => {
           <Dialog.Button
             title="CONFIRM"
             onPress={() => {
-              console.log("name="+search);
+              console.log("name=" + search);
               setSearch(false);
               navigation.navigate("FindLoans", {
                 name: name,

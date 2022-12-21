@@ -2,7 +2,7 @@ import { Alert } from "react-native";
 import { API_URL } from "../constants/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export async function getalladminloans(currPage, limit) {
+export async function costumerGetAllRequests(currPage, limit) {
   let token;
   try {
     token = await AsyncStorage.getItem("userToken");
@@ -22,7 +22,7 @@ export async function getalladminloans(currPage, limit) {
   try {
     const params = { page: currPage, limit: limit };
     let res = fetch(
-      `${API_URL}/api/admin/getalladminloans?page=${currPage}&limit=${limit}`,
+      `${API_URL}/api/user/getallrequests?page=${currPage}&limit=${limit}`,
       requestParameters
     )
       .then((response) => {
@@ -32,7 +32,7 @@ export async function getalladminloans(currPage, limit) {
           });
           return res;
         } else {
-          console.log("Error fetching loan");
+          console.log("Error fetching requests");
         }
       })
       .catch((error) => {
