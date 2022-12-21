@@ -7,6 +7,10 @@ const CostumerRole = new mongoose.Schema({
       ref: "Request",
     },
   ],
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
 });
 
 module.exports = mongoose.model("CostumerRole", CostumerRole);

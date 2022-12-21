@@ -22,6 +22,12 @@ module.exports = function (app) {
     controller.costumerGetAllLoans
   );
 
+  app.post(
+    "/api/user/request",
+    [jwtAuthentication.checkToken, jwtAuthentication.checkUser],
+    controller.costumerRequest
+  );
+
   app.get(
     "/api/test/admin",
     [jwtAuthentication.checkToken, jwtAuthentication.checkAdmin],

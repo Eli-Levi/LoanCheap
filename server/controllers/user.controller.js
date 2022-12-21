@@ -6,6 +6,7 @@ const User = db.user;
 const UserRole = db.role;
 const AdminRole = db.admin;
 const CostumerRole = db.costumer;
+const Request = db.request;
 const Loan = db.loan;
 
 exports.userBoard = (req, res) => {
@@ -146,4 +147,37 @@ exports.costumerGetAllLoans = (req, res) => {
         });
       }
     });
+};
+
+exports.costumerRequest = (req, res) => {
+  Loan.findById(req.body.loan, (err, loan) => {
+    if (err) {
+      res.status(404).send({ error: "can't find loan" });
+    } else {
+      CostumerRole.findOne({ user: req.body.user }, (err, costumer) => {
+        if (err) {
+          res.status(404).send({ error: "can't find costumer" });
+        } else {
+          AdminRole.findById(req.body.admin, (err, admin) => {
+            if (err) {
+              res.status(404).send({ error: "can't find admin" });
+            } else {
+              const request = new Request({
+                admin: admin,
+                loan: loan,
+                costumers: costumer,
+              });
+              request.save((err) => {
+                if (err) {
+                  res.status(401).send({ error: err });
+                  return;
+                }
+              });
+              res.status(200).send({ msg: "Request submited successfully" });
+            }
+          });
+        }
+      });
+    }
+  });
 };
