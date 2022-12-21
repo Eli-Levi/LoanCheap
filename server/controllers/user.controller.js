@@ -112,15 +112,25 @@ exports.costumerGetAllLoans = (req, res) => {
   const { page = 1, limit = 10 } = req.query;
   let data = {
     name: req.body.name,
-    amount: req.body.amout,
+    min: req.body.minAmount,
+    max: req.body.maxAmount,
     interest: req.body.interest,
     loanRepayment: req.body.loanRepayment,
   };
-  Object.keys(data).forEach((key) => {
-    if (data[key] === null || data[key] === undefined) {
-      delete data[key];
-    }
-  });
+  if (data.min) {
+    data = {
+      name: req.body.name,
+      interest: req.body.interest,
+      loanRepayment: req.body.loanRepayment,
+      amount: { $gte: data.min, $lte: data.max },
+    };
+    Object.keys(data).forEach((key) => {
+      if (data[key] === null || data[key] === undefined) {
+        delete data[key];
+      }
+    });
+  }
+  console.log(data);
   Loan.find(data)
     .limit(limit * 1)
     .skip((page - 1) * limit)
@@ -128,12 +138,7 @@ exports.costumerGetAllLoans = (req, res) => {
       if (err) {
         res.status(404).send({ error: "can't find data" });
       } else {
-        const count = await Loan.countDocuments({
-          name: req.body.name,
-          amount: req.body.amout,
-          interest: req.body.interest,
-          loanRepayment: req.body.loanRepayment,
-        });
+        const count = await Loan.countDocuments(data);
         res.status(200).send({
           loans: loan,
           totalPages: Math.ceil(count / limit),

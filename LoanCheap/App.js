@@ -17,6 +17,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LoginScreen from "./src/pages/LoginScreen";
 import UserHomeScreen from "./src/pages/UserHomeScreen";
 import SignUpScreen from "./src/pages/SignUpScreen";
+import FindLoansScreen from "./src/pages/FindLoansScreen";
 import AdminScreen from "./src/pages/AdminScreen";
 import AddLoanScreen from "./src/pages/AddLoanScreen";
 import EditScreen from "./src/pages/EditScreen";
@@ -232,6 +233,8 @@ const App: () => Node = ({ navigation }) => {
               ) : (
                 <>
                   <Stack.Screen name="Home" component={UserHomeScreen} />
+                  <Stack.Screen name="FindLoans" component={FindLoansScreen} />
+
                 </>
               )}
             </>

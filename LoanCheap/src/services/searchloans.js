@@ -6,7 +6,8 @@ export async function searchLoans(
   currPage,
   limit,
   name,
-  amount,
+  minAmount,
+  maxAmount,
   interest,
   loanRepayment
 ) {
@@ -27,7 +28,8 @@ export async function searchLoans(
     },
     body: JSON.stringify({
       name: name,
-      amount: amount,
+      minAmount: minAmount,
+      maxAmount: maxAmount,
       interest: interest,
       loanRepayment: loanRepayment,
     }),
