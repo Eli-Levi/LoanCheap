@@ -131,7 +131,6 @@ exports.costumerGetAllLoans = (req, res) => {
       }
     });
   }
-  console.log(data);
   Loan.find(data)
     .limit(limit * 1)
     .skip((page - 1) * limit)
@@ -154,7 +153,7 @@ exports.costumerRequest = (req, res) => {
     if (err) {
       res.status(404).send({ error: "can't find loan" });
     } else {
-      CostumerRole.findOne({ user: req.body.user }, (err, costumer) => {
+      CostumerRole.findOne({ user: req.userId }, (err, costumer) => {
         if (err) {
           res.status(404).send({ error: "can't find costumer" });
         } else {

@@ -12,6 +12,7 @@ import {
 import { Text, Card, Icon } from "@rneui/themed";
 import React, { useEffect, useState } from "react";
 import { searchLoans } from "../services/searchloans";
+import { loanRequest } from "../services/loanrequest";
 const FindLoansScreen = ({ route, navigation }) => {
   const [currPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(null);
@@ -44,6 +45,8 @@ const FindLoansScreen = ({ route, navigation }) => {
     <ScrollView>
       <View>
         {loans?.map((u, i) => {
+          const loan = u?._id;
+          const admin = u?.admin;
           return (
             <Card>
               <Card.Title>{u?.name}</Card.Title>
@@ -56,10 +59,14 @@ const FindLoansScreen = ({ route, navigation }) => {
               <Text style={{ marginBottom: 10 }}>More Info: {u?.info}</Text>
               <TouchableOpacity
                 onPress={() => {
-                  let currentPage = currPage;
-                  currentPage--;
-                  if (currentPage > 0 && currentPage <= totalPages) {
-                    setCurrentPage(currentPage);
+                  try {
+                    if (loanRequest(loan, admin)) {
+                      Alert.alert("Request submited successfully!");
+                    } else {
+                      Alert.alert("Please try again later");
+                    }
+                  } catch (error) {
+                    console.log(error);
                   }
                 }}
               >
