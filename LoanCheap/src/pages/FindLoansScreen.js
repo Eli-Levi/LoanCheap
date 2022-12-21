@@ -54,16 +54,19 @@ const FindLoansScreen = ({ route, navigation }) => {
                 Loan Repayment: {u?.loanRepayment}
               </Text>
               <Text style={{ marginBottom: 10 }}>More Info: {u?.info}</Text>
-
-              <Button
-                buttonStyle={{
-                  borderRadius: 0,
-                  marginLeft: 0,
-                  marginRight: 0,
-                  marginBottom: 0,
+              <TouchableOpacity
+                onPress={() => {
+                  let currentPage = currPage;
+                  currentPage--;
+                  if (currentPage > 0 && currentPage <= totalPages) {
+                    setCurrentPage(currentPage);
+                  }
                 }}
-                title="Submit A Request"
-              />
+              >
+                <View style={styles.text}>
+                  <Text style={styles.btnSubmit}>Submit A Request</Text>
+                </View>
+              </TouchableOpacity>
             </Card>
           );
         })}
@@ -131,10 +134,20 @@ const styles = StyleSheet.create({
   btn: {
     width: 180,
     height: 40,
-    backgroundColor: "#78B7BB",
+    backgroundColor: "#05445E",
     borderRadius: 45,
     textAlign: "center",
     textAlignVertical: "center",
     fontSize: 25,
+    color: "#fff",
+  },
+  btnSubmit: {
+    height: 30,
+    backgroundColor: "#05445E",
+    borderRadius: 45,
+    textAlign: "center",
+    textAlignVertical: "center",
+    fontSize: 20,
+    color: "#fff",
   },
 });
