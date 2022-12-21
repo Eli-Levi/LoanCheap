@@ -15,12 +15,13 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LoginScreen from "./src/pages/LoginScreen";
-import HomeScreen from "./src/pages/HomeScreen";
+import UserHomeScreen from "./src/pages/UserHomeScreen";
 import SignUpScreen from "./src/pages/SignUpScreen";
 import AdminScreen from "./src/pages/AdminScreen";
 import AddLoanScreen from "./src/pages/AddLoanScreen";
 import EditScreen from "./src/pages/EditScreen";
 import axios from "axios";
+
 // change to you'r ip
 const API_URL = "http://10.0.0.19:8080";
 
@@ -230,7 +231,7 @@ const App: () => Node = ({ navigation }) => {
                 </>
               ) : (
                 <>
-                  <Stack.Screen name="Home" component={HomeScreen} />
+                  <Stack.Screen name="Home" component={UserHomeScreen} />
                 </>
               )}
             </>

@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { AuthContext } from "../../App";
 import { SearchBar } from "@rneui/themed";
 import Icon from 'react-native-vector-icons/FontAwesome';
-const HomeScreen = ({ navigation }) => {
+const UserHomeScreen = ({ navigation }) => {
   const { signOut } = React.useContext(AuthContext);
   const [search, onChangeSearch] = useState("");
 
@@ -28,6 +28,6 @@ const HomeScreen = ({ navigation }) => {
   );
 };
 
-export default HomeScreen;
+export default UserHomeScreen;
 
 const styles = StyleSheet.create({});
