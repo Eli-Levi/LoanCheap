@@ -1,6 +1,7 @@
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 const config = require("../config/auth.config");
+const moment = require("moment");
 const db = require("../models");
 const User = db.user;
 const UserRole = db.role;
@@ -161,13 +162,16 @@ exports.costumerRequest = (req, res) => {
             if (err) {
               res.status(404).send({ error: "can't find admin" });
             } else {
+              // let dateObject = new Date();
+              // let date = dateObject.getDate()+"/"+dateObject.getMonth()+"/"+dateObject.getYear();
+              let date = moment().format("MMM Do YY");
               const request = new Request({
+                details: loan.name + "\n Amount: " + loan.amount + "₪",
                 admin: admin,
                 loan: loan,
                 costumers: costumer,
                 status: "Pending",
-                amount: loan.amount,
-                loanName: loan.name,
+                date: date,
               });
               request.save((err) => {
                 if (err) {
@@ -234,6 +238,34 @@ exports.adminGetAllRequests = (req, res) => {
             });
           }
         });
+    }
+  });
+};
+
+exports.changeRequestStatus = (req, res) => {
+  Request.findById(req.body.request, (err, request) => {
+    if (err) {
+      res.status(404).send({ error: "can't find request" });
+    } else {
+      request.status = req.body.status;
+      request.save((err, responce) => {
+        if (err) {
+          res.status(500).send({ error: err.message });
+        } else {
+          res.status(200).send({ message: "request status changed" });
+        }
+      });
+    }
+  });
+};
+// /api/user/getcontactinfo
+
+exports.getContactInfo = (req, res) => {
+  User.find({ roleData: req.body.user }, (err, user) => {
+    if (err) {
+      res.status(500).send({ error: err.message });
+    } else {
+      res.status(200).send({ user: user });
     }
   });
 };

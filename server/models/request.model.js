@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
 const Request = new mongoose.Schema({
+  details: String,
   admin: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "AdminRole",
@@ -14,9 +15,7 @@ const Request = new mongoose.Schema({
     ref: "CostumerRole",
   },
   status: String,
-  amount: Number,
-  loanName: String,
-  
+  date: String,
 });
 
 module.exports = mongoose.model("Request", Request);

@@ -6,12 +6,15 @@ import {
   SafeAreaView,
   ScrollView,
   Button,
+  Alert,
 } from "react-native";
 import { Table, Row, Rows } from "react-native-table-component";
 import React, { useState, useEffect, useCallback } from "react";
 import { FAB } from "@rneui/themed";
 import { getalladminloans } from "../services/admin";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getAllRequests } from "../services/getallrequests";
+import { changeRequestStatus } from "../services/changerequeststatus";
+import { getContactInfo } from "../services/getcontactinfo";
 import EditElement from "../components/EditElement";
 
 // EditScreen
@@ -25,8 +28,17 @@ const AdminScreen = ({ navigation }) => {
     tableData: [],
   });
 
-  const getFetchData = async (currentPage) => {
-    let fetchData = await getalladminloans(currentPage, 5);
+  const [currPageRequests, setCurrentPageRequests] = useState(1);
+  const [totalPagesRequests, setTotalPagesRequests] = useState(null);
+  const [requests, setRequests] = useState(null);
+  // let data = ;
+  const [dataRequests, setDataRequests] = useState({
+    tableHead: [],
+    tableData: [],
+  });
+
+  const getFetchData = async (currentPageLoan, currentPageRequest) => {
+    let fetchData = await getalladminloans(currentPageLoan, 5);
     setTotalPagesLoans(fetchData.totalPages || 0);
     length = loans?.length || 0;
     let temp = [];
@@ -43,12 +55,58 @@ const AdminScreen = ({ navigation }) => {
       tableHead: ["Name", "Amount", "Edit"],
       tableData: temp,
     });
+
+    fetchData = await getAllRequests(currentPageRequest, 5, "admin");
+    setTotalPagesRequests(fetchData.totalPages || 0);
+    length = loans?.length || 0;
+    temp = [];
+    for (let index = 0; index < fetchData?.requests?.length; index++) {
+      let loanId = fetchData.requests[index]?._id;
+      temp.push([
+        fetchData?.requests[index]?.details,
+        fetchData?.requests[index]?.status,
+        fetchData?.requests[index]?.date,
+        <TouchableOpacity
+          onPress={async () => {
+            let contact = await getContactInfo(
+              fetchData?.requests[index]?.costumers
+            );
+            let name = contact?.user[0]?.name;
+            let email = contact?.user[0]?.email;
+            let phone = contact?.user[0]?.phoneNumber;
+            Alert.alert("Contact info", "Name: " + name + "\n"+"Email: " + email + "\n"+"Phone: " + phone + "\n");
+          }}
+        >
+          <View style={styles.text}>
+            <Text style={styles.btn}>Contact</Text>
+          </View>
+        </TouchableOpacity>,
+        <TouchableOpacity
+          onPress={() => {
+            if (fetchData?.requests[index]?.status === "Pending") {
+              changeRequestStatus(fetchData?.requests[index]?._id, "Finished");
+              setCurrentPageRequests(1);
+            }
+          }}
+        >
+          <View style={styles.text}>
+            <Text style={styles.btn}>Reject</Text>
+          </View>
+        </TouchableOpacity>,
+      ]);
+    }
+    setRequests(fetchData.loans || 0);
+    setDataRequests({
+      tableHead: ["Name", "Request Status", "Date", "Contact", "Cancel"],
+      tableData: temp,
+    });
+    setCurrentPageRequests(fetchData.currentPage);
     setCurrentPageLoans(fetchData.currentPage);
-    console.log("fetch successfully");
+    console.log("Requests fetched successfully");
   };
   useEffect(() => {
-    getFetchData(currPageLoans);
-  }, [currPageLoans]);
+    getFetchData(currPageLoans, currPageRequests);
+  }, [currPageLoans, currPageRequests]);
   return (
     <>
       <SafeAreaView style={styles.container}>
@@ -81,7 +139,7 @@ const AdminScreen = ({ navigation }) => {
               onPress={() => {
                 let currentPage = currPageLoans;
                 currentPage--;
-                if (currentPage > 0 && currentPage <= totalPages) {
+                if (currentPage > 0 && currentPage <= totalPagesLoans) {
                   setCurrentPageLoans(currentPage);
                 }
               }}
@@ -95,7 +153,7 @@ const AdminScreen = ({ navigation }) => {
               onPress={() => {
                 let currentPage = currPageLoans;
                 currentPage++;
-                if (currentPage <= totalPages) {
+                if (currentPage <= totalPagesLoans) {
                   setCurrentPageLoans(currentPage);
                 }
               }}
@@ -106,6 +164,57 @@ const AdminScreen = ({ navigation }) => {
             </TouchableOpacity>
           </View>
           <Text style={styles.baseText}>Requests</Text>
+          <Table
+            borderStyle={{
+              ...{
+                borderWidth: 2,
+                borderColor: "#c8e1ff",
+              },
+            }}
+          >
+            <Row data={dataRequests?.tableHead} style={{ ...styles.head }} />
+            <Rows
+              data={dataRequests?.tableData}
+              style={{ ...styles.head }}
+              textStyle={{ ...styles.text }}
+            />
+          </Table>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "stretch",
+            }}
+          >
+            <TouchableOpacity
+              onPress={() => {
+                let currentPage = currPageRequests;
+                currentPage--;
+                if (currentPage > 0 && currentPage <= totalPagesRequests) {
+                  setCurrentPageRequests(currentPage);
+                }
+              }}
+            >
+              <View style={styles.text}>
+                <Text style={styles.btn}>Prev</Text>
+              </View>
+            </TouchableOpacity>
+            <Text style={{ fontSize: 20 }}>{currPageRequests}</Text>
+            <TouchableOpacity
+              onPress={() => {
+                let currentPage = currPageRequests;
+                currentPage++;
+                if (currentPage <= totalPagesRequests) {
+                  setCurrentPageRequests(currentPage);
+                }
+              }}
+            >
+              <View style={styles.text}>
+                <Text style={styles.btn}>Next</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
         </ScrollView>
         <FAB
           visible={true}
@@ -135,8 +244,8 @@ const styles = StyleSheet.create({
     color: "#05445E",
     marginBottom: 10,
   },
-  head: { height: 40, backgroundColor: "#f1f8ff" },
-  text: { margin: 6 },
+  head: { backgroundColor: "#f1f8ff" },
+  text: { margin: 6, fontSize: 13.5 },
   btn: {
     width: 58,
     height: 18,

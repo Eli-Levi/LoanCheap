@@ -2,7 +2,7 @@ import { Alert } from "react-native";
 import { API_URL } from "../constants/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export async function costumerGetAllRequests(currPage, limit) {
+export async function getContactInfo(user) {
   let token;
   try {
     token = await AsyncStorage.getItem("userToken");
@@ -13,18 +13,17 @@ export async function costumerGetAllRequests(currPage, limit) {
     return;
   }
   const requestParameters = {
-    method: "GET",
+    method: "POST",
     headers: {
       "Content-Type": "application/json",
       "x-access-token": token,
     },
+    body: JSON.stringify({
+      user: user,
+    }),
   };
   try {
-    const params = { page: currPage, limit: limit };
-    let res = fetch(
-      `${API_URL}/api/user/getallrequests?page=${currPage}&limit=${limit}`,
-      requestParameters
-    )
+    let res = fetch(`${API_URL}/api/admin/getcontactinfo`, requestParameters)
       .then((response) => {
         if (response.ok) {
           let res = response.json().then((data) => {

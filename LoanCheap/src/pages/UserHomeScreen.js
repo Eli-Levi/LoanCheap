@@ -13,8 +13,8 @@ import { AuthContext } from "../../App";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { Dialog, Input, CheckBox, ListItem, Avatar, FAB } from "@rneui/themed";
 import { Table, Row, Rows } from "react-native-table-component";
-import { costumerGetAllRequests } from "../services/costumerrequest";
-
+import { getAllRequests } from "../services/getallrequests";
+import { changeRequestStatus } from "../services/changerequeststatus";
 const UserHomeScreen = ({ navigation }) => {
   const [search, setSearch] = useState(false);
   const [name, setName] = useState(null);
@@ -26,26 +26,38 @@ const UserHomeScreen = ({ navigation }) => {
   const [totalPages, setTotalPages] = useState(null);
   const [requests, setRequests] = useState(null);
   const [table, setTable] = useState({
-    tableHead: ["Name", "Amount", "Request Status"],
+    tableHead: [],
     tableData: [],
   });
 
   const getFetchData = async (currentPage) => {
     try {
-      let fetchData = await costumerGetAllRequests(currentPage, 10);
+      let fetchData = await getAllRequests(currentPage, 6, "user");
       setTotalPages(fetchData?.totalPages || 0);
       let temp = [];
       for (let index = 0; index < fetchData?.requests?.length; index++) {
         let loanId = fetchData.requests[index]?._id;
         temp.push([
-          fetchData?.requests[index]?.loanName,
-          fetchData?.requests[index]?.amount,
+          fetchData?.requests[index]?.details,
           fetchData?.requests[index]?.status,
+          fetchData?.requests[index]?.date,
+          <TouchableOpacity
+            onPress={() => {
+              if (fetchData?.requests[index]?.status !== "Canceled") {
+                changeRequestStatus(fetchData?.requests[index]._id, "Canceled");
+                setCurrentPage(1);
+              }
+            }}
+          >
+            <View style={styles.text}>
+              <Text style={styles.btn}>cancel</Text>
+            </View>
+          </TouchableOpacity>,
         ]);
       }
       setRequests(fetchData?.requests || 0);
       setTable({
-        tableHead: ["Name", "Amount", "Request Status"],
+        tableHead: ["Name", "Request Status", "Date", "Cancel"],
         tableData: temp,
       });
       setCurrentPage(fetchData?.currentPage);
@@ -62,6 +74,10 @@ const UserHomeScreen = ({ navigation }) => {
     <View style={styles.container}>
       <ScrollView>
         <Text style={styles.baseText}>Requests</Text>
+        <Text style={styles.text}>
+          All requests will be answered in 5 business days from the day the
+          request was made
+        </Text>
         <Table
           borderStyle={{
             ...{
@@ -186,7 +202,7 @@ const styles = StyleSheet.create({
     color: "#05445E",
     marginBottom: 10,
   },
-  head: { height: 40, backgroundColor: "#f1f8ff" },
+  head: { backgroundColor: "#f1f8ff" },
   text: { margin: 6 },
   btn: {
     width: 58,
