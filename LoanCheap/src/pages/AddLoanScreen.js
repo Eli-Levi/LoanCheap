@@ -7,18 +7,19 @@ import {
   TouchableHighlight,
   Button,
   Alert,
-} from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, {useState} from 'react';
-import {AuthContext} from '../../App';
-import {addLoan} from '../services/addloan';
-const AddLoanScreen = ({navigation}) => {
-  const {signOut} = React.useContext(AuthContext);
+} from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import React, { useState } from "react";
+import { AuthContext } from "../../App";
+import { addLoan } from "../services/addloan";
+const AddLoanScreen = ({ navigation }) => {
+  const { signOut } = React.useContext(AuthContext);
   const [loanName, onChangeLoanName] = useState(null);
   const [amount, onChangeAmount] = useState(null);
   const [loanRepayment, onChangeLoanRepayment] = useState(null);
   const [info, onChangeInfo] = useState(null);
   const [interest, onChangeInterest] = useState(null);
+  const [validated, setValidated] = useState(false);
   return (
     <View style={styles.container}>
       <SafeAreaView>
@@ -37,6 +38,7 @@ const AddLoanScreen = ({navigation}) => {
           value={amount}
           placeholder="Type the loan amount"
           placeholderTextColor="#05445E"
+          keyboardType="numeric"
         />
         <Text style={styles.text}>Interest</Text>
         <TextInput
@@ -44,6 +46,7 @@ const AddLoanScreen = ({navigation}) => {
           onChangeText={onChangeInterest}
           value={interest}
           placeholder="Type the loan interest"
+          keyboardType="numeric"
           placeholderTextColor="#05445E"
         />
         <Text style={styles.text}>Loan Repayment</Text>
@@ -53,37 +56,59 @@ const AddLoanScreen = ({navigation}) => {
           value={loanRepayment}
           placeholder="Type the Loan Repayment"
           placeholderTextColor="#05445E"
+          keyboardType="numeric"
         />
         <Text style={styles.text}>Loan Info</Text>
         <TextInput
           style={styles.input}
           onChangeText={onChangeInfo}
           value={info}
-          placeholder="Type your bank name"
+          placeholder="Type Loan information"
           placeholderTextColor="#05445E"
         />
       </SafeAreaView>
       <View style={styles.fixToText}>
+        {validated ? (
+          <Text style={styles.validate}>
+            Please make sure that you fill every field
+          </Text>
+        ) : null}
+
         <Button
           color="#05445E"
           title="Add Loan"
           onPress={async () => {
-            let data = await addLoan(
-              loanName,
-              amount,
-              loanRepayment,
-              info,
-              interest,
-            );
-            if (data === true) {
-              navigation.navigate('Admin');
+            if (
+              loanName !== null &&
+              amount !== null &&
+              interest !== null &&
+              loanRepayment !== null &&
+              interest !== null &&
+              info !== null
+            ) {
+              try {
+                setValidated(false);
+                let data = await addLoan(
+                  loanName,
+                  amount,
+                  loanRepayment,
+                  info,
+                  interest
+                );
+                if (data === true) {
+                  navigation.navigate("Admin");
+                } else {
+                  Alert.alert("Please try again");
+                }
+              } catch (error) {
+                console.error(error);
+              }
             } else {
-              Alert.alert("Please try again");
+              setValidated(true);
             }
           }}
         />
       </View>
-      <Button title="Sign out" onPress={signOut} />
     </View>
   );
 };
@@ -94,24 +119,29 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 5,
-    backgroundColor: '#FFF',
+    backgroundColor: "#FFF",
   },
   text: {
     fontSize: 16,
-    color: '#05445E',
-    fontWeight: 'bold',
+    color: "#05445E",
+    fontWeight: "bold",
   },
   input: {
     marginTop: 2,
     marginBottom: 2,
-    color: '#05445E',
-    textAlign: 'left',
+    color: "#05445E",
+    textAlign: "left",
     fontSize: 16,
     borderWidth: 1,
     borderRadius: 6,
-    borderColor: '#05445E',
+    borderColor: "#05445E",
   },
   fixToText: {
     marginTop: 10,
+  },
+  validate: {
+    fontSize: 16,
+    color: "red",
+    marginBottom: 10,
   },
 });

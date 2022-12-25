@@ -30,7 +30,6 @@ const API_URL = "http://10.0.0.19:8080";
 const Stack = createNativeStackNavigator();
 const AuthContext = React.createContext();
 export { AuthContext };
-
 const App: () => Node = ({ navigation }) => {
   const [state, dispatch] = React.useReducer(
     (prevState, action) => {
@@ -196,7 +195,7 @@ const App: () => Node = ({ navigation }) => {
               fontWeight: "bold",
             },
             headerShadowVisible: false,
-            headerRight: () => <ProfileHeader/>
+            headerRight: () => <ProfileHeader />,
           }}
         >
           {state.userToken == null ? (
@@ -236,7 +235,6 @@ const App: () => Node = ({ navigation }) => {
                 <>
                   <Stack.Screen name="Home" component={UserHomeScreen} />
                   <Stack.Screen name="FindLoans" component={FindLoansScreen} />
-
                 </>
               )}
             </>

@@ -7,7 +7,7 @@ export async function getalladminloans(currPage, limit) {
   try {
     token = await AsyncStorage.getItem("userToken");
   } catch (e) {
-    console.log(e);
+    console.log("error:" + e);
   }
   if (token === null) {
     return;

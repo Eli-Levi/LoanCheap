@@ -18,7 +18,7 @@ const FindLoansScreen = ({ route, navigation }) => {
   const [totalPages, setTotalPages] = useState(null);
   const [loans, setLoans] = useState(null);
   const { name, minAmount, maxAmount, interest, loanRepayment } = route.params;
-
+  console.log(name, minAmount, maxAmount, interest, loanRepayment);
   const getFetchData = async (currentPage) => {
     try {
       let fetchData = await searchLoans(

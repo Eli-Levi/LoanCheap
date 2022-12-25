@@ -30,7 +30,6 @@ const UserHomeScreen = ({ navigation }) => {
     tableHead: [],
     tableData: [],
   });
-
   const getFetchData = async (currentPage) => {
     try {
       let fetchData = await getAllRequests(currentPage, 6, "user");
@@ -164,8 +163,12 @@ const UserHomeScreen = ({ navigation }) => {
           <Dialog.Button
             title="CONFIRM"
             onPress={() => {
-              console.log("name=" + search);
+              if (name === "") {
+                console.log("name=" + name + "name");
+                setName(null);
+              }
               setSearch(false);
+              console.log(name);
               navigation.navigate("FindLoans", {
                 name: name,
                 minAmount: min,

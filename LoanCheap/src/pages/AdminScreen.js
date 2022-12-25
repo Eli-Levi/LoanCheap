@@ -7,6 +7,7 @@ import {
   ScrollView,
   Button,
   Alert,
+  Linking,
 } from "react-native";
 import { Table, Row, Rows } from "react-native-table-component";
 import React, { useState, useEffect, useCallback } from "react";
@@ -22,6 +23,7 @@ const AdminScreen = ({ navigation }) => {
   const [currPageLoans, setCurrentPageLoans] = useState(1);
   const [totalPagesLoans, setTotalPagesLoans] = useState(null);
   const [loans, setLoans] = useState(null);
+  const [reload, setRelaod] = useState(1);
   // let data = ;
   const [dataLoans, setDataLoans] = useState({
     tableHead: ["Name", "Amount", "Edit"],
@@ -38,26 +40,28 @@ const AdminScreen = ({ navigation }) => {
   });
 
   const getFetchData = async (currentPageLoan, currentPageRequest) => {
-    let fetchData = await getalladminloans(currentPageLoan, 5);
-    setTotalPagesLoans(fetchData.totalPages || 0);
+    let fetchData = null;
+    fetchData = await getalladminloans(currentPageLoan, 5);
+    setTotalPagesLoans(fetchData?.totalPages || 0);
     length = loans?.length || 0;
     let temp = [];
-    for (let index = 0; index < fetchData.loans.length; index++) {
-      let loanId = fetchData.loans[index]?._id;
+    for (let index = 0; index < fetchData?.loans.length; index++) {
+      let loanId = fetchData?.loans[index]?._id;
       temp.push([
-        fetchData.loans[index]?.name,
-        fetchData.loans[index]?.amount,
+        fetchData?.loans[index]?.name,
+        fetchData?.loans[index]?.amount,
         <EditElement data={loanId} />,
       ]);
     }
-    setLoans(fetchData.loans || 0);
+    setLoans(fetchData?.loans || 0);
     setDataLoans({
       tableHead: ["Name", "Amount", "Edit"],
       tableData: temp,
     });
 
     fetchData = await getAllRequests(currentPageRequest, 5, "admin");
-    setTotalPagesRequests(fetchData.totalPages || 0);
+
+    setTotalPagesRequests(fetchData?.totalPages || 0);
     length = loans?.length || 0;
     temp = [];
     for (let index = 0; index < fetchData?.requests?.length; index++) {
@@ -74,30 +78,94 @@ const AdminScreen = ({ navigation }) => {
             let name = contact?.user[0]?.name;
             let email = contact?.user[0]?.email;
             let phone = contact?.user[0]?.phoneNumber;
-            Alert.alert("Contact info", "Name: " + name + "\n"+"Email: " + email + "\n"+"Phone: " + phone + "\n");
+            Alert.alert(
+              "Contact info",
+              "Name: " +
+                name +
+                "\n" +
+                "Email: " +
+                email +
+                "\n" +
+                "Phone: " +
+                phone +
+                "\n",
+              [
+                {
+                  text: "Call now",
+                  onPress: async () => {
+                    const telephone = "tel:+972" + phone;
+                    await Linking.openURL(telephone);
+                    console.log("Ask me later pressed");
+                  },
+                },
+                {
+                  text: "Send an Email",
+                  onPress: async () => {
+                    const emailTo = "mailto:" + email;
+                    await Linking.openURL(emailTo);
+                    console.log("Ask me later pressed");
+                  },
+                },
+                {
+                  text: "Cancel",
+                  onPress: () => console.log("Cancel Pressed"),
+                  style: "cancel",
+                },
+                { text: "OK", onPress: () => console.log("OK Pressed") },
+              ]
+            );
           }}
         >
           <View style={styles.text}>
             <Text style={styles.btn}>Contact</Text>
           </View>
         </TouchableOpacity>,
-        <TouchableOpacity
-          onPress={() => {
-            if (fetchData?.requests[index]?.status === "Pending") {
-              changeRequestStatus(fetchData?.requests[index]?._id, "Finished");
-              setCurrentPageRequests(1);
-            }
-          }}
-        >
-          <View style={styles.text}>
-            <Text style={styles.btn}>Reject</Text>
-          </View>
-        </TouchableOpacity>,
+        <View>
+          <TouchableOpacity
+            onPress={() => {
+              if (fetchData?.requests[index]?.status === "Pending") {
+                changeRequestStatus(
+                  fetchData?.requests[index]?._id,
+                  "Rejected"
+                );
+                setCurrentPageRequests(1);
+                setRelaod(reload + 1);
+              }
+            }}
+          >
+            <View style={styles.text}>
+              <Text style={styles.btn}>Reject</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              if (fetchData?.requests[index]?.status === "Pending") {
+                changeRequestStatus(
+                  fetchData?.requests[index]?._id,
+                  "Accepted"
+                );
+                setCurrentPageRequests(1);
+                setRelaod(reload + 1);
+              }
+            }}
+          >
+            <View style={styles.text}>
+              <Text style={styles.btn}>Accept</Text>
+            </View>
+          </TouchableOpacity>
+        </View>,
       ]);
     }
+
     setRequests(fetchData.loans || 0);
     setDataRequests({
-      tableHead: ["Name", "Request Status", "Date", "Contact", "Cancel"],
+      tableHead: [
+        "Details",
+        "Request Status",
+        "Date",
+        "Contact",
+        "Accept or Reject",
+      ],
       tableData: temp,
     });
     setCurrentPageRequests(currentPageRequest);
@@ -106,7 +174,7 @@ const AdminScreen = ({ navigation }) => {
   };
   useEffect(() => {
     getFetchData(currPageLoans, currPageRequests);
-  }, [currPageLoans, currPageRequests]);
+  }, [currPageLoans, currPageRequests, reload]);
   return (
     <>
       <SafeAreaView style={styles.container}>
