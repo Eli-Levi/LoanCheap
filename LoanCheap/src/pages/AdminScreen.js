@@ -100,8 +100,8 @@ const AdminScreen = ({ navigation }) => {
       tableHead: ["Name", "Request Status", "Date", "Contact", "Cancel"],
       tableData: temp,
     });
-    setCurrentPageRequests(fetchData.currentPage);
-    setCurrentPageLoans(fetchData.currentPage);
+    setCurrentPageRequests(currentPageRequest);
+    setCurrentPageLoans(currentPageLoan);
     console.log("Requests fetched successfully");
   };
   useEffect(() => {
