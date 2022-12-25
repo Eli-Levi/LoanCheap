@@ -16,6 +16,7 @@ import { Table, Row, Rows } from "react-native-table-component";
 import { getAllRequests } from "../services/getallrequests";
 import { changeRequestStatus } from "../services/changerequeststatus";
 const UserHomeScreen = ({ navigation }) => {
+  const [reload, setReload] = useState(0);
   const [search, setSearch] = useState(false);
   const [name, setName] = useState(null);
   const [min, setMin] = useState(null);
@@ -34,6 +35,7 @@ const UserHomeScreen = ({ navigation }) => {
     try {
       let fetchData = await getAllRequests(currentPage, 6, "user");
       setTotalPages(fetchData?.totalPages || 0);
+      console.log(fetchData?.requests?.length);
       let temp = [];
       for (let index = 0; index < fetchData?.requests?.length; index++) {
         let loanId = fetchData.requests[index]?._id;
@@ -45,19 +47,20 @@ const UserHomeScreen = ({ navigation }) => {
             onPress={() => {
               if (fetchData?.requests[index]?.status !== "Canceled") {
                 changeRequestStatus(fetchData?.requests[index]._id, "Canceled");
-                setCurrentPage(1);
+                setCurrentPage(currentPage);
+                setReload(reload + 1);
               }
             }}
           >
             <View style={styles.text}>
-              <Text style={styles.btn}>cancel</Text>
+              <Text style={styles.btn}>Cancel</Text>
             </View>
           </TouchableOpacity>,
         ]);
       }
       setRequests(fetchData?.requests || 0);
       setTable({
-        tableHead: ["Name", "Request Status", "Date", "Cancel"],
+        tableHead: ["Details", "Request Status", "Submition date", "Cancel"],
         tableData: temp,
       });
       setCurrentPage(fetchData?.currentPage);
@@ -68,7 +71,7 @@ const UserHomeScreen = ({ navigation }) => {
   };
   useEffect(() => {
     getFetchData(currPage);
-  }, [currPage]);
+  }, [currPage, reload]);
 
   return (
     <View style={styles.container}>
@@ -172,7 +175,13 @@ const UserHomeScreen = ({ navigation }) => {
               });
             }}
           />
-          <Dialog.Button title="CANCEL" onPress={() => setSearch(false)} />
+          <Dialog.Button
+            title="CANCEL"
+            onPress={() => {
+              setSearch(false);
+              setReload(reload + 1);
+            }}
+          />
         </Dialog.Actions>
       </Dialog>
       <FAB
