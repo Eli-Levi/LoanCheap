@@ -17,9 +17,11 @@ import { getAllRequests } from "../services/getallrequests";
 import { changeRequestStatus } from "../services/changerequeststatus";
 import { getContactInfo } from "../services/getcontactinfo";
 import EditElement from "../components/EditElement";
+import { useIsFocused } from "@react-navigation/native";
 
 // EditScreen
 const AdminScreen = ({ navigation }) => {
+  const isFocused = useIsFocused();
   const [currPageLoans, setCurrentPageLoans] = useState(1);
   const [totalPagesLoans, setTotalPagesLoans] = useState(null);
   const [loans, setLoans] = useState(null);
@@ -174,7 +176,7 @@ const AdminScreen = ({ navigation }) => {
   };
   useEffect(() => {
     getFetchData(currPageLoans, currPageRequests);
-  }, [currPageLoans, currPageRequests, reload]);
+  }, [currPageLoans, currPageRequests, reload, isFocused]);
   return (
     <>
       <SafeAreaView style={styles.container}>
