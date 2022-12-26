@@ -32,7 +32,7 @@ const dbConfig = require("./config/db.config.js");
 db.mongoose
   // .connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
   .connect(
-    `mongodb+srv://loancheap12345:${process.env.PASS}@universityapp.brx75x7.mongodb.net/test`,
+    `mongodb+srv://loancheap12345:${process.env.PASS}@universityapp.brx75x7.mongodb.net/LoanCheap`,
     {
       useNewUrlParser: true,
       useUnifiedTopology: true,
