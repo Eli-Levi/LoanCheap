@@ -48,7 +48,7 @@ const FindLoansScreen = ({ route, navigation }) => {
           const loan = u?._id;
           const admin = u?.admin;
           return (
-            <Card>
+            <Card key={i}>
               <Card.Title>{u?.name}</Card.Title>
               <Card.Divider />
               <Text style={{ marginBottom: 10 }}>Amount: {u?.amount}</Text>

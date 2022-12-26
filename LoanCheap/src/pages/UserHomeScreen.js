@@ -15,7 +15,10 @@ import { Dialog, Input, CheckBox, ListItem, Avatar, FAB } from "@rneui/themed";
 import { Table, Row, Rows } from "react-native-table-component";
 import { getAllRequests } from "../services/getallrequests";
 import { changeRequestStatus } from "../services/changerequeststatus";
+import { useIsFocused } from "@react-navigation/native";
+
 const UserHomeScreen = ({ navigation }) => {
+  const isFocused = useIsFocused();
   const [reload, setReload] = useState(0);
   const [search, setSearch] = useState(false);
   const [name, setName] = useState(null);
@@ -70,7 +73,7 @@ const UserHomeScreen = ({ navigation }) => {
   };
   useEffect(() => {
     getFetchData(currPage);
-  }, [currPage, reload]);
+  }, [currPage, reload, isFocused]);
 
   return (
     <View style={styles.container}>
