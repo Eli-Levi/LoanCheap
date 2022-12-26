@@ -37,7 +37,7 @@ export async function addLoan(loanNam, amount, loanRepayment, info, interest) {
     let res = fetch(`${API_URL}/api/admin/addloan`, requestParameters)
       .then(response => {
         if (response.ok) {
-          response.json().then(data => {});
+//          response.json().then(data => {});
           console.log('loan added successfully');
           return true;
         } else {
