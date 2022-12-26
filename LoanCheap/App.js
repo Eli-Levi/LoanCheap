@@ -23,9 +23,7 @@ import AdminScreen from "./src/pages/AdminScreen";
 import AddLoanScreen from "./src/pages/AddLoanScreen";
 import EditScreen from "./src/pages/EditScreen";
 import axios from "axios";
-
-// change to you'r ip
-const API_URL = "http://10.0.0.19:8080";
+import {API_URL} from "./src/constants/api"
 
 const Stack = createNativeStackNavigator();
 const AuthContext = React.createContext();
