@@ -287,7 +287,7 @@ const AdminScreen = ({ navigation }) => {
         <FAB
           visible={true}
           color="green"
-          title="Add a new loan"
+          title="Add Loan"
           onPress={() => navigation.navigate("AddLoan")}
           placement="bottom"
         />
