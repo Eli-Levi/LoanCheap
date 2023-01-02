@@ -7,12 +7,12 @@ LoanCheap is a mobile app, for loans.
 - Send a request and the bank will call you
 
 ## Features (for users)
-- search for loans and filter results
-- send a request for a loan
+- Search for loans and filter results
+- Send a request for a loan
 
 ## Features (for admin)
 - Add new loans and remove old loans
-- manage loan requests made by users
+- Manage loan requests made by users
 
 ## Development
 LoanCheap is built with:
