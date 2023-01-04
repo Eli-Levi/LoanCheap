@@ -26,10 +26,28 @@ import axios from "axios";
 import {API_URL} from "./src/constants/api"
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-
+const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 const AuthContext = React.createContext();
 export { AuthContext };
+
+const AdminTabs = () => {
+  return (
+    <Tab.Navigator>
+      <Tab.Screen
+                    name="Admin"
+                    component={AdminScreen}
+                    options={{ title: "Dashboard" }}
+                  />
+                  <Tab.Screen
+                    name="AddLoan"
+                    component={AddLoanScreen}
+                    options={{ title: "Add Loan" }}
+                  />
+    </Tab.Navigator>
+  );
+};
+
 const App: () => Node = ({ navigation }) => {
   const [state, dispatch] = React.useReducer(
     (prevState, action) => {
@@ -216,14 +234,8 @@ const App: () => Node = ({ navigation }) => {
               {state.isAdmin == true ? (
                 <>
                   <Stack.Screen
-                    name="Admin"
-                    component={AdminScreen}
-                    options={{ title: "Dashboard" }}
-                  />
-                  <Stack.Screen
-                    name="AddLoan"
-                    component={AddLoanScreen}
-                    options={{ title: "Add Loan" }}
+                    name="Home"
+                    component={AdminTabs}
                   />
                   <Stack.Screen
                     name="EditScreen"
