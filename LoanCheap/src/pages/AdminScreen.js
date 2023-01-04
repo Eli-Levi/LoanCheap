@@ -18,8 +18,6 @@ import { changeRequestStatus } from "../services/changerequeststatus";
 import { getContactInfo } from "../services/getcontactinfo";
 import EditElement from "../components/EditElement";
 import { useIsFocused } from "@react-navigation/native";
-import { Box, FlatList, Heading, Avatar, HStack, VStack, Spacer, Center, NativeBaseProvider } from "native-base";
-// EditScreen
 const AdminScreen = ({ navigation }) => {
   const isFocused = useIsFocused();
   const [currPageLoans, setCurrentPageLoans] = useState(1);
