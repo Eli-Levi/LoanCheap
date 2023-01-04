@@ -18,7 +18,7 @@ import { changeRequestStatus } from "../services/changerequeststatus";
 import { getContactInfo } from "../services/getcontactinfo";
 import EditElement from "../components/EditElement";
 import { useIsFocused } from "@react-navigation/native";
-
+import { Box, FlatList, Heading, Avatar, HStack, VStack, Spacer, Center, NativeBaseProvider } from "native-base";
 // EditScreen
 const AdminScreen = ({ navigation }) => {
   const isFocused = useIsFocused();
@@ -97,7 +97,6 @@ const AdminScreen = ({ navigation }) => {
                   onPress: async () => {
                     const telephone = "tel:+972" + phone;
                     await Linking.openURL(telephone);
-                    console.log("Ask me later pressed");
                   },
                 },
                 {
@@ -105,7 +104,6 @@ const AdminScreen = ({ navigation }) => {
                   onPress: async () => {
                     const emailTo = "mailto:" + email;
                     await Linking.openURL(emailTo);
-                    console.log("Ask me later pressed");
                   },
                 },
                 {

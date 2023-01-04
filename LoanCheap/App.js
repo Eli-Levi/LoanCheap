@@ -24,6 +24,8 @@ import AddLoanScreen from "./src/pages/AddLoanScreen";
 import EditScreen from "./src/pages/EditScreen";
 import axios from "axios";
 import {API_URL} from "./src/constants/api"
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
 
 const Stack = createNativeStackNavigator();
 const AuthContext = React.createContext();
