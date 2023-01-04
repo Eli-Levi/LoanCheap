@@ -38,17 +38,23 @@ const AdminTabs = () => {
       <Tab.Screen
                     name="AdminRequests"
                     component={AdminScreen}
-                    options={{ headerShown: false }}
+                    options={{ headerShown: false,
+                      tabBarIcon: () => false,
+                      }}
                   />
                   <Tab.Screen
                     name="AddLoan"
                     component={AddLoanScreen}
-                    options={{ headerShown: false }}
+                    options={{ headerShown: false,
+                      tabBarIcon: () => false,
+                    }}
                   />
                   <Tab.Screen
                     name="AdminLoans"
                     component={AdminLoanScreen}
-                    options={{ headerShown: false }}
+                    options={{ headerShown: false,
+                      tabBarIcon: () => false,
+                     }}
                   />
     </Tab.Navigator>
   );
