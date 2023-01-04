@@ -36,19 +36,19 @@ const AdminTabs = () => {
   return (
     <Tab.Navigator>
       <Tab.Screen
-                    name="Admin"
+                    name="AdminRequests"
                     component={AdminScreen}
-                    options={{ title: "Dashboard" }}
+                    options={{ headerShown: false }}
                   />
                   <Tab.Screen
                     name="AddLoan"
                     component={AddLoanScreen}
-                    options={{ title: "Add Loan" }}
+                    options={{ headerShown: false }}
                   />
                   <Tab.Screen
                     name="AdminLoans"
                     component={AdminLoanScreen}
-                    options={{ title: "Admin Loans" }}
+                    options={{ headerShown: false }}
                   />
     </Tab.Navigator>
   );
@@ -240,7 +240,7 @@ const App: () => Node = ({ navigation }) => {
               {state.isAdmin == true ? (
                 <>
                   <Stack.Screen
-                    name="Home"
+                    name="Admin"
                     component={AdminTabs}
                   />
                   <Stack.Screen

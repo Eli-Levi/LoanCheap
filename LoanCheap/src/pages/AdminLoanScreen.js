@@ -34,7 +34,7 @@ const AdminLoanScreen = () => {
 
     const getFetchData = async (currentPageLoan) => {
         let fetchData = null;
-        fetchData = await getalladminloans(currentPageLoan, 15);
+        fetchData = await getalladminloans(currentPageLoan, 10);
         setTotalPagesLoans(fetchData?.totalPages || 0);
         let temp = [];
         for (let index = 0; index < fetchData?.loans.length; index++) {

@@ -177,58 +177,6 @@ const AdminScreen = ({ navigation }) => {
     <>
       <SafeAreaView style={styles.container}>
         <ScrollView>
-          <Text style={styles.baseText}>Added Loans</Text>
-          <Table
-            borderStyle={{
-              ...{
-                borderWidth: 2,
-                borderColor: "#c8e1ff",
-              },
-            }}
-          >
-            <Row data={dataLoans?.tableHead} style={{ ...styles.head }} />
-            <Rows
-              data={dataLoans?.tableData}
-              style={{ ...styles.head }}
-              textStyle={{ ...styles.text }}
-            />
-          </Table>
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "row",
-              justifyContent: "center",
-              alignItems: "stretch",
-            }}
-          >
-            <TouchableOpacity
-              onPress={() => {
-                let currentPage = currPageLoans;
-                currentPage--;
-                if (currentPage > 0 && currentPage <= totalPagesLoans) {
-                  setCurrentPageLoans(currentPage);
-                }
-              }}
-            >
-              <View style={styles.text}>
-                <Text style={styles.btn}>Prev</Text>
-              </View>
-            </TouchableOpacity>
-            <Text style={{ fontSize: 20 }}>{currPageLoans}</Text>
-            <TouchableOpacity
-              onPress={() => {
-                let currentPage = currPageLoans;
-                currentPage++;
-                if (currentPage <= totalPagesLoans) {
-                  setCurrentPageLoans(currentPage);
-                }
-              }}
-            >
-              <View style={styles.text}>
-                <Text style={styles.btn}>Next</Text>
-              </View>
-            </TouchableOpacity>
-          </View>
           <Text style={styles.baseText}>Requests</Text>
           <Table
             borderStyle={{
