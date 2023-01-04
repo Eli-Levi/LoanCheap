@@ -25,6 +25,7 @@ import EditScreen from "./src/pages/EditScreen";
 import axios from "axios";
 import {API_URL} from "./src/constants/api"
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import AdminLoanScreen from "./src/pages/AdminLoanScreen";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -43,6 +44,11 @@ const AdminTabs = () => {
                     name="AddLoan"
                     component={AddLoanScreen}
                     options={{ title: "Add Loan" }}
+                  />
+                  <Tab.Screen
+                    name="AdminLoans"
+                    component={AdminLoanScreen}
+                    options={{ title: "Admin Loans" }}
                   />
     </Tab.Navigator>
   );
@@ -179,7 +185,7 @@ const App: () => Node = ({ navigation }) => {
               if (response.ok) {
                 response.json().then((data) => {
                   Alert.alert(
-                    "account created successfully, please go  back to log in",
+                    "account created successfully, please go back to log in",
                     JSON.stringify(data)
                   );
                   dispatch({ type: "SIGN_IN", token: null });
