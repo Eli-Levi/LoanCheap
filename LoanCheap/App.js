@@ -26,16 +26,45 @@ import axios from "axios";
 import {API_URL} from "./src/constants/api"
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import AdminLoanScreen from "./src/pages/AdminLoanScreen";
+import AdminStatisticScreen from "./src/pages/AdminStatisticScreen";
+import UserWellcomeScreen from "./src/pages/UserWellcomeScreen";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 const AuthContext = React.createContext();
 export { AuthContext };
 
+const UserTabs = () =>{
+  return(
+    <Tab.Navigator>
+      <Tab.Screen
+         name="Wellcome"
+         component={UserWellcomeScreen}
+         options={{ headerShown: false,
+           tabBarIcon: () => false,
+          }}
+       />
+       <Tab.Screen
+       name="Home"
+       component={UserHomeScreen}
+       options={{ headerShown: false,
+         tabBarIcon: () => false,
+        }}
+     />
+    </Tab.Navigator>
+  );
+};
 const AdminTabs = () => {
   return (
     <Tab.Navigator>
-      <Tab.Screen
+                  <Tab.Screen
+                    name="Statistics"
+                    component={AdminStatisticScreen}
+                    options={{ headerShown: false,
+                      tabBarIcon: () => false,
+                     }}
+                  />
+                  <Tab.Screen
                     name="AdminRequests"
                     component={AdminScreen}
                     options={{ headerShown: false,
@@ -257,7 +286,10 @@ const App: () => Node = ({ navigation }) => {
                 </>
               ) : (
                 <>
-                  <Stack.Screen name="Home" component={UserHomeScreen} />
+                <Stack.Screen
+                    name="Wellcome Costumer"
+                    component={UserTabs}
+                  />
                   <Stack.Screen name="FindLoans" component={FindLoansScreen} />
                 </>
               )}
