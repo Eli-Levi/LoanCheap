@@ -214,24 +214,27 @@ const App: () => Node = ({ navigation }) => {
           }),
         };
         try {
-          await fetch(`${API_URL}/api/auth/signup`, requestParameters)
+          const bool = await fetch(`${API_URL}/api/auth/signup`, requestParameters)
             .then((response) => {
               Alert.alert(JSON.stringify(response));
               if (response.ok) {
                 response.json().then((data) => {
                   Alert.alert(
-                    "account created successfully, please go back to log in",
-                    JSON.stringify(data)
+                    "Account Created Successfully,\nYou Are Now Able To Log In",
+                    //JSON.stringify(data)
                   );
                   dispatch({ type: "SIGN_IN", token: null });
+                  return true;
                 });
               } else {
                 Alert.alert("Error signing up: please try again");
+                return false;
               }
             })
             .catch((error) => {
               console.log(error);
             });
+            return bool;
         } catch (error) {
           Alert.alert(error);
           console.error(error);
