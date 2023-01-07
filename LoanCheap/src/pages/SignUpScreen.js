@@ -105,7 +105,8 @@ const SignUpScreen = ({navigation}) => {
             color="#05445E"
             title="Sign up"
             onPress={() =>
-              signUp({
+              { 
+                const bool = signUp({
                 name,
                 phoneNumber,
                 email,
@@ -113,7 +114,11 @@ const SignUpScreen = ({navigation}) => {
                 role,
                 bankName,
                 filesLink,
-              })
+              });
+            if (bool){
+              navigation.navigate('SignIn');
+            }
+            }
             }
           />
         </View>
