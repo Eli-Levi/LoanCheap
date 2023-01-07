@@ -50,7 +50,7 @@ const UserTabs = () => {
 
           return <Icon name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: "tomato",
+        tabBarActiveTintColor: "#05445E",
         tabBarInactiveTintColor: "gray",
       })}
     >
@@ -69,26 +69,48 @@ const UserTabs = () => {
 };
 const AdminTabs = () => {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+      tabBarIcon: ({ focused, color, size }) => {
+        let iconName;
+
+        if (route.name === "Statistics") {
+          iconName = "bar-chart-o"
+        } else if (route.name === "AdminRequests") {
+          iconName = "th-list";
+        }
+        else if (route.name === "AddLoan") {
+          iconName = "plus-circle";
+        }
+        else if (route.name === "AdminLoans") {
+          iconName = "thumb-tack";
+        }
+        
+        return <Icon name={iconName} size={size} color={color} />;
+      },
+      tabBarActiveTintColor: "#05445E",
+      tabBarInactiveTintColor: "gray",
+    })}>
+      
       <Tab.Screen
         name="Statistics"
         component={AdminStatisticScreen}
-        options={{ headerShown: false, tabBarIcon: () => false }}
+        options={{ headerShown: false }}
       />
       <Tab.Screen
         name="AdminRequests"
         component={AdminScreen}
-        options={{ headerShown: false, tabBarIcon: () => false }}
+        options={{ headerShown: false }}
       />
       <Tab.Screen
         name="AddLoan"
         component={AddLoanScreen}
-        options={{ headerShown: false, tabBarIcon: () => false }}
+        options={{ headerShown: false }}
       />
       <Tab.Screen
         name="AdminLoans"
         component={AdminLoanScreen}
-        options={{ headerShown: false, tabBarIcon: () => false }}
+        options={{ headerShown: false }}
       />
     </Tab.Navigator>
   );
