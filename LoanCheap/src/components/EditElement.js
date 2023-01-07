@@ -2,12 +2,11 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
 
-const EditElement = ({ data }) => {
+const EditElement = (props) => {
   const navigation = useNavigation();
-
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate("EditScreen", { loan: data })}
+      onPress={() => navigation.navigate("EditScreen", { props })}
     >
       <View style={styles.text}>
         <Text style={styles.btn}>Edit</Text>

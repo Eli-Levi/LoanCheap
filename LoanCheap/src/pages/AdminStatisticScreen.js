@@ -31,7 +31,7 @@ const AdminStatisticScreen = () => {
   const getFetchData = async () => {
     let fetchData = null;
     fetchData = await getCharts();
-    setPieChart(fetchData?.pieChartData || pieChartData);
+    setPieChart(fetchData?.pieChartData);
   }
   useEffect(() => {
     getFetchData();

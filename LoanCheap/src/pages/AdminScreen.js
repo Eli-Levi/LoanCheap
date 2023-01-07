@@ -46,11 +46,21 @@ const AdminScreen = ({ navigation }) => {
     length = loans?.length || 0;
     let temp = [];
     for (let index = 0; index < fetchData?.loans.length; index++) {
-      let loanId = fetchData?.loans[index]?._id;
+      let name = fetchData?.loans[index]?.name;
+      let amount = fetchData?.loans[index]?.amount;
+      let interest = fetchData?.loans[index]?.interest;
+      let loanRepayment = fetchData?.loans[index]?.loanRepayment;
+      let info = fetchData?.loans[index]?.info;
       temp.push([
         fetchData?.loans[index]?.name,
         fetchData?.loans[index]?.amount,
-        <EditElement data={loanId} />,
+        <EditElement
+          name={name}
+          amount={amount}
+          interest={interest}
+          loanRepayment={loanRepayment}
+          info={info}
+        />,
       ]);
     }
     setLoans(fetchData?.loans || 0);
