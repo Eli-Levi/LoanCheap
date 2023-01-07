@@ -23,68 +23,73 @@ import AdminScreen from "./src/pages/AdminScreen";
 import AddLoanScreen from "./src/pages/AddLoanScreen";
 import EditScreen from "./src/pages/EditScreen";
 import axios from "axios";
-import {API_URL} from "./src/constants/api"
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { API_URL } from "./src/constants/api";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import AdminLoanScreen from "./src/pages/AdminLoanScreen";
 import AdminStatisticScreen from "./src/pages/AdminStatisticScreen";
 import UserWellcomeScreen from "./src/pages/UserWellcomeScreen";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 const AuthContext = React.createContext();
 export { AuthContext };
 
-const UserTabs = () =>{
-  return(
-    <Tab.Navigator>
+const UserTabs = () => {
+  return (
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName;
+
+          if (route.name === "Home") {
+            iconName = "home";
+          } else if (route.name === "Wellcome") {
+            iconName = "rocket";
+          }
+
+          return <Icon name={iconName} size={size} color={color} />;
+        },
+        tabBarActiveTintColor: "tomato",
+        tabBarInactiveTintColor: "gray",
+      })}
+    >
       <Tab.Screen
-         name="Wellcome"
-         component={UserWellcomeScreen}
-         options={{ headerShown: false,
-           tabBarIcon: () => false,
-          }}
-       />
-       <Tab.Screen
-       name="Home"
-       component={UserHomeScreen}
-       options={{ headerShown: false,
-         tabBarIcon: () => false,
-        }}
-     />
+        name="Wellcome"
+        component={UserWellcomeScreen}
+        options={{ headerShown: false}}
+      />
+      <Tab.Screen
+        name="Home"
+        component={UserHomeScreen}
+        options={{ headerShown: false }}
+      />
     </Tab.Navigator>
   );
 };
 const AdminTabs = () => {
   return (
     <Tab.Navigator>
-                  <Tab.Screen
-                    name="Statistics"
-                    component={AdminStatisticScreen}
-                    options={{ headerShown: false,
-                      tabBarIcon: () => false,
-                     }}
-                  />
-                  <Tab.Screen
-                    name="AdminRequests"
-                    component={AdminScreen}
-                    options={{ headerShown: false,
-                      tabBarIcon: () => false,
-                      }}
-                  />
-                  <Tab.Screen
-                    name="AddLoan"
-                    component={AddLoanScreen}
-                    options={{ headerShown: false,
-                      tabBarIcon: () => false,
-                    }}
-                  />
-                  <Tab.Screen
-                    name="AdminLoans"
-                    component={AdminLoanScreen}
-                    options={{ headerShown: false,
-                      tabBarIcon: () => false,
-                     }}
-                  />
+      <Tab.Screen
+        name="Statistics"
+        component={AdminStatisticScreen}
+        options={{ headerShown: false, tabBarIcon: () => false }}
+      />
+      <Tab.Screen
+        name="AdminRequests"
+        component={AdminScreen}
+        options={{ headerShown: false, tabBarIcon: () => false }}
+      />
+      <Tab.Screen
+        name="AddLoan"
+        component={AddLoanScreen}
+        options={{ headerShown: false, tabBarIcon: () => false }}
+      />
+      <Tab.Screen
+        name="AdminLoans"
+        component={AdminLoanScreen}
+        options={{ headerShown: false, tabBarIcon: () => false }}
+      />
     </Tab.Navigator>
   );
 };
@@ -277,10 +282,7 @@ const App: () => Node = ({ navigation }) => {
             <>
               {state.isAdmin == true ? (
                 <>
-                  <Stack.Screen
-                    name="Admin"
-                    component={AdminTabs}
-                  />
+                  <Stack.Screen name="Admin" component={AdminTabs} />
                   <Stack.Screen
                     name="EditScreen"
                     component={EditScreen}
@@ -289,10 +291,7 @@ const App: () => Node = ({ navigation }) => {
                 </>
               ) : (
                 <>
-                <Stack.Screen
-                    name="Wellcome Costumer"
-                    component={UserTabs}
-                  />
+                  <Stack.Screen name="Wellcome Costumer" component={UserTabs} />
                   <Stack.Screen name="FindLoans" component={FindLoansScreen} />
                 </>
               )}
