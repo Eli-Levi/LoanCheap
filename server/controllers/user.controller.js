@@ -258,7 +258,6 @@ exports.changeRequestStatus = (req, res) => {
     }
   });
 };
-// /api/user/getcontactinfo
 
 exports.getContactInfo = (req, res) => {
   User.find({ roleData: req.body.user }, (err, user) => {
@@ -266,6 +265,43 @@ exports.getContactInfo = (req, res) => {
       res.status(500).send({ error: err.message });
     } else {
       res.status(200).send({ user: user });
+    }
+  });
+};
+
+exports.getAdminCharts = (req, res) => {
+  User.find({ roleData: req.body.user }, async (err, user) => {
+    if (err) {
+      res.status(500).send({ error: err.message });
+    } else {
+      const accepted = await Request.countDocuments({ status: "Accepted" });
+      const pending = await Request.countDocuments({ status: "Pending" });
+      const rejected = await Request.countDocuments({ status: "Rejected" });
+      const pieChartData = [
+        {
+          name: "Accepted",
+          population: accepted,
+          color: "blue",
+          legendFontColor: "black",
+          legendFontSize: 15,
+        },
+        {
+          name: "Pending",
+          population: pending,
+          color: "grey",
+          legendFontColor: "black",
+          legendFontSize: 15,
+        },
+        {
+          name: "Rejected",
+          population: rejected,
+          color: "black",
+          legendFontColor: "black",
+          legendFontSize: 15,
+        },
+      ];
+      const data = JSON.stringify(pieChartData);
+      res.status(200).send({ pieChartData });
     }
   });
 };

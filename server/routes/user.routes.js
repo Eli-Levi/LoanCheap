@@ -79,4 +79,10 @@ module.exports = function (app) {
     [jwtAuthentication.checkToken, jwtAuthentication.checkAdmin],
     controller.getContactInfo
   );
+
+  app.get(
+    "/api/admin/getCharts",
+    [jwtAuthentication.checkToken, jwtAuthentication.checkAdmin],
+    controller.getAdminCharts
+  );
 };

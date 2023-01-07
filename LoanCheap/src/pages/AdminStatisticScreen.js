@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, Dimensions, ScrollView } from "react-native";
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {
   LineChart,
   BarChart,
@@ -9,7 +9,8 @@ import {
   StackedBarChart,
 } from "react-native-chart-kit";
 import { progressChartData, pieChartData } from "./data";
-
+import { useIsFocused } from "@react-navigation/native";
+import {getCharts} from "../services/getcharts"
 const chartConfigs = [
   {
     backgroundColor: "#fff",
@@ -23,8 +24,19 @@ const chartConfigs = [
 ];
 
 const AdminStatisticScreen = () => {
-  const width = Dimensions.get("window").width - 10;
+  const width = Dimensions.get("window").width;
   const height = 269;
+  const isFocused = useIsFocused();
+  const [pieChart, setPieChart] = useState(pieChartData)
+  const getFetchData = async () => {
+    let fetchData = null;
+    fetchData = await getCharts();
+    setPieChart(fetchData?.pieChartData || pieChartData);
+  }
+  useEffect(() => {
+    getFetchData();
+  }, [isFocused])
+  
   return (
     <ScrollView>
       {chartConfigs.map((chartConfig) => {
@@ -43,7 +55,7 @@ const AdminStatisticScreen = () => {
           <ScrollView
             key={Math.random()}
             style={{
-              backgroundColor: chartConfig.backgroundColor,
+              // backgroundColor: chartConfig.backgroundColor,
             }}
           >
             <View
@@ -51,22 +63,16 @@ const AdminStatisticScreen = () => {
                 alignItems: "center",
               }}
             >
-              <Text style={labelStyle}>Progress Chart</Text>
-              <ProgressChart
-                data={progressChartData}
-                width={width}
-                height={height}
-                chartConfig={chartConfig}
-                style={graphStyle}
-              />
-              <Text style={labelStyle}>Banks</Text>
+              <Text style={labelStyle}>Requests</Text>
               <PieChart
-                data={pieChartData}
+                data={pieChart}
                 height={height}
                 width={width}
                 chartConfig={chartConfig}
                 accessor="population"
                 style={graphStyle}
+                paddingLeft={"15"}
+                absolute
               />
             </View>
           </ScrollView>
