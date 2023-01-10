@@ -9,6 +9,7 @@ import {
   Alert,
 } from "react-native";
 import React, { useState } from "react";
+import {updateLoan} from "../services/updateloan";
 
 export default function EditScreen({ route, navigation }) {
   // const { loan } = ;
@@ -95,18 +96,18 @@ export default function EditScreen({ route, navigation }) {
             ) {
               try {
                 setValidated(false);
-                // let data = await addLoan(
-                //   loanName,
-                //   amount,
-                //   loanRepayment,
-                //   info,
-                //   interest
-                // );
-                // if (data === true) {
-                //   // navigation.navigate("Admin");
-                // } else {
-                //   Alert.alert("Please try again");
-                // }
+                let data = await updateLoan(
+                  loanName,
+                  amount,
+                  loanRepayment,
+                  info,
+                  interest
+                );
+                if (data === true) {
+                  navigation.navigate("AdminLoans");
+                } else {
+                  Alert.alert("Please try again");
+                }
               } catch (error) {
                 console.error(error);
               }

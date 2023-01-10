@@ -137,7 +137,7 @@ const AdminScreen = ({ navigation }) => {
                   "Rejected"
                 );
                 setCurrentPageRequests(1);
-                setRelaod(reload + 1);
+                setReload(reload + 1);
               }
             }}
           >
@@ -153,7 +153,7 @@ const AdminScreen = ({ navigation }) => {
                   "Accepted"
                 );
                 setCurrentPageRequests(1);
-                setRelaod(reload + 1);
+                setReload(reload + 1);
               }
             }}
           >
