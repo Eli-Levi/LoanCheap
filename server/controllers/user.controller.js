@@ -23,21 +23,22 @@ exports.adminEditLoan = (req, res) => {
     if (err) {
       res.status(404).send({ error: "can't find user" });
     } else {
-      Loan.findById(req.body.loanId).exec(async (err, loan) => {
+      Loan.findOne({ name: req.body.name, admin: user.roleData }, async (err, loan) => {
         if (err) {
           res.status(404).send({ error: "can't find data" });
         } else {
-          const { name, amount, interest, loanRepayment, info, status } =
-            req.body.newData;
-          loan.name = name;
-          loan.amount = amount;
-          loan.loanRepayment = loanRepayment;
-          loan.info = info;
-          loan.status = status;
+          // console.log(req.body);
+          const { name, amount, interest, loanRepayment, info } = req.body;
+            loan.name = name;
+            loan.amount = amount;
+            loan.loanRepayment = loanRepayment;
+            loan.info = info;
+            // loan.status = status;
           loan.save();
           res.status(200).send({
-            loan: loan,
+            message: "Loan updated"
           });
+
         }
       });
     }
