@@ -2,11 +2,11 @@ import { View, ScrollView, StyleSheet } from 'react-native';
 import { Text, Tile } from '@rneui/themed';
 import React from 'react'
 
-const UserWellcomeScreen = () => {
+const UserWelcomeScreen = () => {
   return (
     <View>
       <Text>  </Text>
-      <Text>  Wellcome to our app,</Text>
+      <Text>  Welcome to our app,</Text>
       <Text>  Here, as a costumer you can:</Text>
       <Text>            1.Search for loans in the system</Text>
       <Text>            2.Submit a request for loans</Text>
@@ -22,6 +22,6 @@ const UserWellcomeScreen = () => {
   )
 }
 
-export default UserWellcomeScreen
+export default UserWelcomeScreen
 
 const styles = StyleSheet.create({})

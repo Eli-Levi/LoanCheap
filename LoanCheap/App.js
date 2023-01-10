@@ -27,7 +27,7 @@ import { API_URL } from "./src/constants/api";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import AdminLoanScreen from "./src/pages/AdminLoanScreen";
 import AdminStatisticScreen from "./src/pages/AdminStatisticScreen";
-import UserWellcomeScreen from "./src/pages/UserWellcomeScreen";
+import UserWelcomeScreen from "./src/pages/UserWelcomeScreen";
 import Icon from "react-native-vector-icons/FontAwesome";
 
 const Tab = createBottomTabNavigator();
@@ -44,7 +44,7 @@ const UserTabs = () => {
 
           if (route.name === "Home") {
             iconName = "home";
-          } else if (route.name === "Wellcome") {
+          } else if (route.name === "Welcome") {
             iconName = "rocket";
           }
 
@@ -55,8 +55,8 @@ const UserTabs = () => {
       })}
     >
       <Tab.Screen
-        name="Wellcome"
-        component={UserWellcomeScreen}
+        name="Welcome"
+        component={UserWelcomeScreen}
         options={{ headerShown: false}}
       />
       <Tab.Screen
@@ -313,7 +313,7 @@ const App: () => Node = ({ navigation }) => {
                 </>
               ) : (
                 <>
-                  <Stack.Screen name="Wellcome Costumer" component={UserTabs} />
+                  <Stack.Screen name="Welcome Costumer" component={UserTabs} />
                   <Stack.Screen name="FindLoans" component={FindLoansScreen} />
                 </>
               )}
