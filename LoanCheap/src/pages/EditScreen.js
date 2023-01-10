@@ -84,7 +84,7 @@ export default function EditScreen({ route, navigation }) {
 
         <Button
           color="#05445E"
-          title="Add Loan"
+          title="Edit Loan"
           onPress={async () => {
             if (
               loanName !== null &&
