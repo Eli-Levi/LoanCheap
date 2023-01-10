@@ -59,6 +59,14 @@ npm start
 cd LoanCheap/LoanCheap
 npm run android
 ```
+
+## Issues
+Should the app raise errors while trying to start the frontend, try running the following command first.
+```sh
+npm install
+```
+Since you might be missing some packages.
+
 ## Authors
    Eli Levi, Dor Baram, Ibrahim Chahine
    
