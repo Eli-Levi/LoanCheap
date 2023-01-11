@@ -10,16 +10,6 @@ const CostumerRole = db.costumer;
 const Request = db.request;
 const Loan = db.loan;
 
-exports.userBoard = (req, res) => {
-  res.status(200).send("User");
-};
-
-exports.adminBoard = (req, res) => {
-  res.status(200).send("Admin");
-};
-
-
-
 exports.costumerGetAllLoans = (req, res) => {
   const { page = 1, limit = 10 } = req.query;
   let data = {

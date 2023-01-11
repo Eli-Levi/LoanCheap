@@ -11,7 +11,7 @@ const Request = db.request;
 const Loan = db.loan;
 
 /**
- * @API PUT Request for editing a loan
+ * @Controller PUT Request for editing a loan
  * This is a implementation of the edit loan API.
  * Before getting to this controller we have middlewares that check if the
  * token is valid, and if the user is an admin.
@@ -52,7 +52,7 @@ exports.adminEditLoan = (req, res) => {
   });
 };
 /**
- * @API GET Request paging API for getting all the loans that an admin have added.
+ * @Controller GET Request paging API for getting all the loans that an admin have added.
  * In this controller, we expect to get query params in order to allow
  * paging, if we didnt get the query params that we put bellow, then we
  * assume that the params are { page = 1, limit = 10 }.
@@ -87,7 +87,7 @@ exports.adminGetAllLoans = (req, res) => {
   });
 };
 /**
- * @API POST Request API for adding a new loan for an admin.
+ * @Controller POST Request API for adding a new loan for an admin.
  * In this controller we expect for params in the body of the request, see bellow:
  * @param name: The name of the new loan.
  * @param amount: The amount of the new loan.
@@ -138,7 +138,7 @@ exports.adminAddLoan = (req, res) => {
   });
 };
 /**
- * @API GET Request paging API for getting all the requests that an admin has.
+ * @Controller GET Request paging API for getting all the requests that an admin has.
  * In this controller, we expect to get query params in order to allow
  * paging, if we didnt get the query params that we put bellow, then we
  * assume that the params are { page = 1, limit = 10 }.
@@ -174,7 +174,7 @@ exports.adminGetAllRequests = (req, res) => {
   });
 };
 /**
- * @API PUT Request for updating a request status.
+ * @Controller PUT Request for updating a request status.
  * In this controller we expect the params in the body of the request, see below:
  * @param status The loan request new status.
  * @return A message if the request was successful or not.
@@ -196,7 +196,7 @@ exports.changeRequestStatus = (req, res) => {
   });
 };
 /**
- * @API GET Request for getting the contact information of a loan request user.
+ * @Controller GET Request for getting the contact information of a loan request user.
  * In this controller we expect the params in the body of the request, see below:
  * @param user The id of the user that requested the loan.
  * @return { user: user } of error message if not found.
@@ -211,7 +211,7 @@ exports.getContactInfo = (req, res) => {
   });
 };
 /**
- * @API GET Request for getting the charts data for an admin.
+ * @Controller GET Request for getting the charts data for an admin.
  * @return { chartData } of error message if an error is encountered.
  */
 exports.getAdminCharts = (req, res) => {

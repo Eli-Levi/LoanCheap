@@ -7,7 +7,18 @@ const UserRole = db.role;
 const AdminRole = db.admin;
 const CostumerRole = db.costumer;
 const Loan = db.loan;
-
+/**
+ * @Controller POST request API for signup.
+ * This is signup for a new admin of customer.
+ * For the params in the body of the request, see below:
+ * @phoneNumber the phone number of the user.
+ * @name the name of the user.
+ * @email the email of the user.
+ * @password the password of the user.
+ * if it's a admin, then these params are also added:
+ * @files link for the files that spicify that user works in a bank
+ * @bank name the name of the bank.
+ */
 exports.signup = (req, res) => {
   const num = Number(req.body.phoneNumber);
   if (!(Number.isInteger(num) && num > 0)) {
@@ -74,7 +85,14 @@ exports.signup = (req, res) => {
     }
   });
 };
-
+/**
+ * @Controller POST request API for signip.
+ * This is signin for a admin of customer.
+ * For the params in the body of the request, see below:
+ * @email the email of the user.
+ * @password the password of the user.
+ * @return JSON with the access token and role of the user.
+ */
 exports.signin = (req, res) => {
   User.findOne({
     email: req.body.email,
@@ -99,8 +117,6 @@ exports.signin = (req, res) => {
     UserRole.findById(user.roles).exec((err, role) => {
       var token = jwt.sign({ id: user.id }, config.secret, {});
       res.status(200).send({
-        id: user._id,
-        email: user.email,
         roles: role.name,
         accessToken: token,
       });
