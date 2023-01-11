@@ -1,12 +1,16 @@
-import { View, ScrollView, StyleSheet } from 'react-native';
+import { View, ScrollView, StyleSheet, Image } from 'react-native';
 import { Text, Tile } from '@rneui/themed';
-import React from 'react'
+import React from 'react';
 
 const UserWelcomeScreen = () => {
   return (
-    <View style={{flex: 1, padding: 16}}>
+    <View style={{flex: 1, position: 'relative'}}>
+    <Image
+      source={{uri: 'https://github.com/Eli-Levi/LoanCheap/blob/master/LoanCheap/src/images/LoanCheapLogo.png'}}
+      style={{width: 200, height: 200, position: 'absolute', alignSelf: 'center'}}
+    />
+  <View style={{flex: 1, padding: 16}}>
   <Text style={{fontSize: 24, fontWeight: 'bold', marginBottom: 16}}>Welcome to our app</Text>
-  
   <View style={{flexDirection: 'row', alignItems: 'center'}}>
     <View style={{width: 24, height: 24, backgroundColor: '#05445E', borderRadius: 12, marginRight: 8}} />
     <Text style={{fontSize: 18, fontWeight: 'bold'}}>As a customer you can:</Text>
@@ -52,7 +56,7 @@ const UserWelcomeScreen = () => {
 </View>
 </View>
 </View>
-
+ </View>
   );
 };
 
