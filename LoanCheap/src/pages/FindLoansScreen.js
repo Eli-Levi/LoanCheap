@@ -18,6 +18,8 @@ const FindLoansScreen = ({ route, navigation }) => {
   const [totalPages, setTotalPages] = useState(null);
   const [loans, setLoans] = useState(null);
   const { name, minAmount, maxAmount, interest, loanRepayment } = route.params;
+  const [nextDisabled, setNextDisabled] = useState(false);
+  const [prevDisabled, setPrevDisabled] = useState(true);
   console.log(name, minAmount, maxAmount, interest, loanRepayment);
   const getFetchData = async (currentPage) => {
     try {
@@ -90,12 +92,19 @@ const FindLoansScreen = ({ route, navigation }) => {
               let currentPage = currPage;
               currentPage--;
               if (currentPage > 0 && currentPage <= totalPages) {
+                if(currentPage < totalPages){
+                  setNextDisabled(false);
+                }
+                if(currentPage == 1){
+                  setPrevDisabled(true);
+                }
                 setCurrentPage(currentPage);
               }
             }}
+            disabled = {prevDisabled}
           >
             <View style={styles.text}>
-              <Text style={styles.btn}>Prev</Text>
+            <Text style={[styles.btn, {backgroundColor: prevDisabled ? 'grey' : "#05445E"}]}>Prev</Text>
             </View>
           </TouchableOpacity>
           <Text style={{ fontSize: 30, textAlignVertical: "center" }}>
@@ -106,12 +115,17 @@ const FindLoansScreen = ({ route, navigation }) => {
               let currentPage = currPage;
               currentPage++;
               if (currentPage <= totalPages) {
+                if(currentPage == totalPages){
+                  setNextDisabled(true);
+                }
+                setPrevDisabled(false);
                 setCurrentPage(currentPage);
               }
             }}
+            disabled = {nextDisabled}
           >
             <View style={styles.text}>
-              <Text style={styles.btn}>Next</Text>
+              <Text style={[styles.btn, {backgroundColor: nextDisabled ? 'grey' : "#05445E"}]}>Next</Text>
             </View>
           </TouchableOpacity>
         </View>
