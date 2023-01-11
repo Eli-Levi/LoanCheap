@@ -20,16 +20,7 @@ import EditElement from "../components/EditElement";
 import { useIsFocused } from "@react-navigation/native";
 const AdminScreen = ({ navigation }) => {
   const isFocused = useIsFocused();
-  const [currPageLoans, setCurrentPageLoans] = useState(1);
-  const [totalPagesLoans, setTotalPagesLoans] = useState(null);
-  const [loans, setLoans] = useState(null);
   const [reload, setReload] = useState(1);
-  // let data = ;
-  const [dataLoans, setDataLoans] = useState({
-    tableHead: ["Name", "Amount", "Edit"],
-    tableData: [],
-  });
-
   const [currPageRequests, setCurrentPageRequests] = useState(1);
   const [totalPagesRequests, setTotalPagesRequests] = useState(null);
   const [requests, setRequests] = useState(null);
@@ -39,40 +30,10 @@ const AdminScreen = ({ navigation }) => {
     tableData: [],
   });
 
-  const getFetchData = async (currentPageLoan, currentPageRequest) => {
+  const getFetchData = async (currentPageRequest) => {
     let fetchData = null;
-    fetchData = await getalladminloans(currentPageLoan, 5);
-    setTotalPagesLoans(fetchData?.totalPages || 0);
-    length = loans?.length || 0;
-    let temp = [];
-    for (let index = 0; index < fetchData?.loans.length; index++) {
-      let name = fetchData?.loans[index]?.name;
-      let amount = fetchData?.loans[index]?.amount;
-      let interest = fetchData?.loans[index]?.interest;
-      let loanRepayment = fetchData?.loans[index]?.loanRepayment;
-      let info = fetchData?.loans[index]?.info;
-      temp.push([
-        fetchData?.loans[index]?.name,
-        fetchData?.loans[index]?.amount,
-        <EditElement
-          name={name}
-          amount={amount}
-          interest={interest}
-          loanRepayment={loanRepayment}
-          info={info}
-        />,
-      ]);
-    }
-    setLoans(fetchData?.loans || 0);
-    setDataLoans({
-      tableHead: ["Name", "Amount", "Edit"],
-      tableData: temp,
-    });
-
     fetchData = await getAllRequests(currentPageRequest, 5, "admin");
-
     setTotalPagesRequests(fetchData?.totalPages || 0);
-    length = loans?.length || 0;
     temp = [];
     for (let index = 0; index < fetchData?.requests?.length; index++) {
       let loanId = fetchData.requests[index]?._id;
@@ -165,7 +126,7 @@ const AdminScreen = ({ navigation }) => {
       ]);
     }
 
-    setRequests(fetchData.loans || 0);
+    setRequests(fetchData?.requests || 0);
     setDataRequests({
       tableHead: [
         "Details",
@@ -177,12 +138,11 @@ const AdminScreen = ({ navigation }) => {
       tableData: temp,
     });
     setCurrentPageRequests(currentPageRequest);
-    setCurrentPageLoans(currentPageLoan);
     console.log("Requests fetched successfully");
   };
   useEffect(() => {
-    getFetchData(currPageLoans, currPageRequests);
-  }, [currPageLoans, currPageRequests, reload, isFocused]);
+    getFetchData(currPageRequests);
+  }, [currPageRequests, reload, isFocused]);
   return (
     <>
       <SafeAreaView style={styles.container}>
