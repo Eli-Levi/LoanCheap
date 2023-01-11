@@ -18,6 +18,8 @@ This repo is part of a Software engineering course in Ariel University.
 - Contact users who sybmitted for your loans via phone or email
 - See statistics
 
+![Alt text](/Document/tech.png)
+
 ## Development
 LoanCheap is built with:
 
