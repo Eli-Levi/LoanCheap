@@ -49,6 +49,7 @@ exports.costumerGetAllLoans = (req, res) => {
     }
   });
   Loan.find(data)
+    .sort({interest: 'asc'})
     .limit(limit * 1)
     .skip((page - 1) * limit)
     .exec(async (err, loan) => {
@@ -96,7 +97,7 @@ exports.costumerRequest = (req, res) => {
                   return;
                 }
               });
-              res.status(200).send({ msg: "Request submited successfully" });
+              res.status(200).send({ msg: "Request submitted successfully" });
             }
           });
         }
