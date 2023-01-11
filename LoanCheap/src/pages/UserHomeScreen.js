@@ -194,7 +194,7 @@ const UserHomeScreen = ({ navigation }) => {
       <FAB
         visible={true}
         color="green"
-        title="Look for loans"
+        title="Find loans"
         onPress={() => setSearch(true)}
         placement="bottom"
       />
