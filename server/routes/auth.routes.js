@@ -1,6 +1,8 @@
 const { checkSignUp } = require("../middlewares");
 const controller = require("../controllers/auth.controller");
-
+/**
+ * This is the routes file fot the authentication API's.
+ */
 module.exports = function(app) {
   app.use(function(req, res, next) {
     res.header(

@@ -1,6 +1,8 @@
 const { jwtAuthentication, checkAddLoan } = require("../middlewares");
 const controller = require("../controllers/customer.controller");
-
+/**
+ * This is the routes file fot the customer role API's.
+ */
 module.exports = function (app) {
   app.use(function (req, res, next) {
     res.header(

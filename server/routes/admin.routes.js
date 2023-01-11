@@ -2,6 +2,9 @@ const { jwtAuthentication, checkAddLoan } = require("../middlewares");
 const controller = require("../controllers/admin.controller");
 
 module.exports = function (app) {
+  /**
+   * This is the routes file fot the admin role API's..
+   */
   app.use(function (req, res, next) {
     res.header(
       "Access-Control-Allow-Headers",
@@ -9,7 +12,6 @@ module.exports = function (app) {
     );
     next();
   });
-
   app.post(
     "/api/admin/addloan",
     [
