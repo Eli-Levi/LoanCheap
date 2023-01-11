@@ -1,4 +1,6 @@
 # LoanCheap
+![Alt text](/Document/small.gif)
+
 This repo is part of a Software engineering course in Ariel University.
 
 #### LoanCheap is a mobile app, for loans.
