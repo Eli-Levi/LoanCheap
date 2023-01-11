@@ -30,7 +30,6 @@ const db = require("./models");
 const UserRole = db.role;
 const dbConfig = require("./config/db.config.js");
 db.mongoose
-  // .connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
   .connect(
     `mongodb+srv://loancheap12345:${process.env.PASS}@universityapp.brx75x7.mongodb.net/LoanCheap`,
     {
@@ -70,4 +69,5 @@ function initial() {
   });
 }
 require("./routes/auth.routes")(app);
-require("./routes/user.routes")(app);
+require("./routes/customer.routes")(app);
+require("./routes/admin.routes")(app);
