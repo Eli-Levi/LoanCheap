@@ -178,8 +178,6 @@ const App: () => Node = ({ navigation }) => {
   const authContext = React.useMemo(
     () => ({
       signIn: async (data) => {
-        // In a production app, we need to send some data (usually username, password) to server and get a token
-        // We will also need to handle errors if sign in failed
         const requestParameters = {
           method: "POST",
           headers: {
@@ -248,7 +246,6 @@ const App: () => Node = ({ navigation }) => {
                 response.json().then((data) => {
                   Alert.alert(
                     "Account Created Successfully,\nYou Are Now Able To Log In",
-                    //JSON.stringify(data)
                   );
                   dispatch({ type: "SIGN_IN", token: null });
                   return true;
