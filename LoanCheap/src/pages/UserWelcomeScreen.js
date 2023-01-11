@@ -6,8 +6,8 @@ const UserWelcomeScreen = () => {
   return (
     <View style={{flex: 1, position: 'relative'}}>
     <Image
-      source={{uri: 'https://github.com/Eli-Levi/LoanCheap/blob/master/LoanCheap/src/images/LoanCheapLogo.png'}}
-      style={{width: 200, height: 200, position: 'absolute', alignSelf: 'center'}}
+      source={require('../images/LoanCheap.png')}
+      style={{width: 110, height: 110, position: 'relative', alignSelf: 'center'}}
     />
   <View style={{flex: 1, padding: 16}}>
   <Text style={{fontSize: 24, fontWeight: 'bold', marginBottom: 16}}>Welcome to our app</Text>
