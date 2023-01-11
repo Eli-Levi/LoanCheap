@@ -9,6 +9,7 @@ import {
   Button,
   Alert,
   Switch,
+  Image,
 } from 'react-native';
 import {AuthContext} from '../../App';
 const SignUpScreen = ({navigation}) => {
@@ -33,7 +34,16 @@ const SignUpScreen = ({navigation}) => {
   return (
     <>
       <View style={styles.container}>
-        <Text style={styles.titleLogo}>LoanCheap</Text>
+      <Image
+        source={require("../images/LoanCheap.png")}
+        style={{
+          width: 140,
+          height: 140,
+          position: "absolute",
+          alignSelf: "flex-end",
+        }}
+      />
+
         <Text style={styles.title}>SignUp</Text>
         <Text style={styles.subTitle}>Create an account</Text>
         <SafeAreaView>

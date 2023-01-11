@@ -8,6 +8,7 @@ import {
   TouchableHighlight,
   Button,
   Alert,
+  Image,
 } from "react-native";
 import { AuthContext } from "../../App";
 import {validation} from "../helper/emailValidation";
@@ -22,7 +23,16 @@ const LoginScreen = ({ navigation }) => {
   return (
     <>
       <View style={styles.container}>
-        <Text style={styles.titleLogo}>LoanCheap</Text>
+        
+        <Image
+        source={require("../images/LoanCheap.png")}
+        style={{
+          width: 250,
+          height: 250,
+          position: "relative",
+          alignSelf: "center",
+        }}
+      />
         <Text style={styles.title}>Login</Text>
         <Text style={styles.subTitle}>Please sign in</Text>
         <SafeAreaView>
