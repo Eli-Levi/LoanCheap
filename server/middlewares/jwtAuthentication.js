@@ -4,6 +4,12 @@ const db = require("../models");
 const User = db.user;
 const UserRole = db.role;
 
+/**
+ * @Middleware for valdating if a token already exists in the database.
+ * In this middleware, we expect the token in the body of the request.
+ * @param token The token.
+ * If successful then next() else return error message.
+ */
 checkToken = (req, res, next) => {
   let token = req.headers["x-access-token"];
   if (!token) {
@@ -19,6 +25,11 @@ checkToken = (req, res, next) => {
   });
 };
 
+/**
+ * @Middleware for valdating if a user is a vaild admin.
+ * In this middleware, we expect userID in the body of the request.
+ * If successful then next() else return error message.
+ */
 checkAdmin = (req, res, next) => {
   User.findById(req.userId).exec((err, user) => {
     if (err) {
@@ -46,6 +57,11 @@ checkAdmin = (req, res, next) => {
   });
 };
 
+/**
+ * @Middleware for valdating if a user is a vaild costumer('user').
+ * In this middleware, we expect userID in the body of the request.
+ * If successful then next() else return error message.
+ */
 checkUser = (req, res, next) => {
   User.findById(req.userId).exec((err, user) => {
     if (err) {

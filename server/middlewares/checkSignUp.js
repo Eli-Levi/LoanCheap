@@ -2,6 +2,12 @@ const db = require("../models");
 const ROLES = db.ROLES;
 const User = db.user;
 
+/**
+ * @Middleware for verifing if a email already registered in the database.
+ * In this middleware, we expect email in the request.
+ * @param email The email.
+ * If successful then next() else return error message accordingly.
+ */
 checkDuplicateEmail = (req, res, next) => {
   User.findOne({
     email: req.body.email,
@@ -18,6 +24,11 @@ checkDuplicateEmail = (req, res, next) => {
   });
 };
 
+/**
+ * @Middleware for verifing if a role is valid (admin/user).
+ * In this middleware, we expect role in the request.
+ * If successful then next() else return error message accordingly.
+ */
 checkRoles = (req, res, next) => {
   if (req.body.roles) {
     if (!ROLES.includes(req.body.roles)) {
@@ -30,6 +41,11 @@ checkRoles = (req, res, next) => {
   next();
 };
 
+/**
+ * @Middleware for validating if a email has the proper stracture.
+ * In this middleware, we expect email in the request.
+ * If successful then next() else return error message accordingly.
+ */
 isValidEmail= (req, res, next) => {
   // regex to check if email is in correct format
   const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -42,6 +58,11 @@ isValidEmail= (req, res, next) => {
   next();
 };
 
+/**
+ * @Middleware for validating if a phone number has the proper stracture.
+ * In this middleware, we expect phone number in the request.
+ * If successful then next() else return error message accordingly.
+ */
 isValidPhone= (req, res, next) => {
   // regex to check if phone number is in correct format (10 digits only)
   const phoneRegex = /^\d{10}$/;
