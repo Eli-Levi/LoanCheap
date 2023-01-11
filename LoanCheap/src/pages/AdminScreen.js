@@ -23,7 +23,7 @@ const AdminScreen = ({ navigation }) => {
   const [currPageLoans, setCurrentPageLoans] = useState(1);
   const [totalPagesLoans, setTotalPagesLoans] = useState(null);
   const [loans, setLoans] = useState(null);
-  const [reload, setRelaod] = useState(1);
+  const [reload, setReload] = useState(1);
   // let data = ;
   const [dataLoans, setDataLoans] = useState({
     tableHead: ["Name", "Amount", "Edit"],

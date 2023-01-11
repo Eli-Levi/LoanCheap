@@ -96,7 +96,7 @@ const AddLoanScreen = ({ navigation }) => {
                   interest
                 );
                 if (data === true) {
-                  navigation.navigate("Admin");
+                  navigation.navigate("AdminLoans");
                 } else {
                   Alert.alert("Please try again");
                 }

@@ -10,41 +10,58 @@ const CostumerRole = db.costumer;
 const Request = db.request;
 const Loan = db.loan;
 
-exports.userBoard = (req, res) => {
-  res.status(200).send("User");
-};
-
-exports.adminBoard = (req, res) => {
-  res.status(200).send("Admin");
-};
-
+/**
+ * @Controller PUT Request for editing a loan
+ * This is a implementation of the edit loan API.
+ * Before getting to this controller we have middlewares that check if the
+ * token is valid, and if the user is an admin.
+ * * In this controller we expect for params in the body of the request, see bellow:
+ * @param name: The name of the new loan.
+ * @param amount: The amount of the new loan.
+ * @param interest: The interest of the new loan.
+ * @param loanRepayment: The loan repayment time of the new loan.
+ * @param info: The information of the new loan,
+ * @param admin: The admin data of the new loan (ID of the admin data table).
+ * @return a comment if successfull or not.
+ */
 exports.adminEditLoan = (req, res) => {
   User.findById(req.userId, (err, user) => {
     if (err) {
       res.status(404).send({ error: "can't find user" });
     } else {
-      Loan.findOne({ name: req.body.name, admin: user.roleData }, async (err, loan) => {
-        if (err) {
-          res.status(404).send({ error: "can't find data" });
-        } else {
-          // console.log(req.body);
-          const { name, amount, interest, loanRepayment, info } = req.body;
+      Loan.findOne(
+        { name: req.body.name, admin: user.roleData },
+        async (err, loan) => {
+          if (err) {
+            res.status(404).send({ error: "can't find data" });
+          } else {
+            // console.log(req.body);
+            const { name, amount, interest, loanRepayment, info } = req.body;
             loan.name = name;
             loan.amount = amount;
             loan.loanRepayment = loanRepayment;
             loan.info = info;
-            // loan.status = status;
-          loan.save();
-          res.status(200).send({
-            message: "Loan updated"
-          });
-
+            loan.save();
+            res.status(200).send({
+              message: "Loan updated",
+            });
+          }
         }
-      });
+      );
     }
   });
 };
-
+/**
+ * @Controller GET Request paging API for getting all the loans that an admin have added.
+ * In this controller, we expect to get query params in order to allow
+ * paging, if we didnt get the query params that we put bellow, then we
+ * assume that the params are { page = 1, limit = 10 }.
+ * @param page a param send with the query to specify which page to return.
+ * @param limit a param send with the query to specify the limit in the page.
+ * @return {loans, totalPages, currentPage}, loans is for the loans in the page given, totalPages is for the number of pages,
+ * and currentPage is for the page that has been requested.
+ *
+ */
 exports.adminGetAllLoans = (req, res) => {
   const { page = 1, limit = 10 } = req.query;
   User.findById(req.userId, (err, user) => {
@@ -69,7 +86,17 @@ exports.adminGetAllLoans = (req, res) => {
     }
   });
 };
-
+/**
+ * @Controller POST Request API for adding a new loan for an admin.
+ * In this controller we expect for params in the body of the request, see bellow:
+ * @param name: The name of the new loan.
+ * @param amount: The amount of the new loan.
+ * @param interest: The interest of the new loan.
+ * @param loanRepayment: The loan repayment time of the new loan.
+ * @param info: The information of the new loan,
+ * @param admin: The admin data of the new loan (ID of the admin data table).
+ * @return a comment if successfull or not.
+ */
 exports.adminAddLoan = (req, res) => {
   User.findById(req.userId, (err, user) => {
     if (err) {
@@ -110,112 +137,16 @@ exports.adminAddLoan = (req, res) => {
     }
   });
 };
-
-exports.costumerGetAllLoans = (req, res) => {
-  const { page = 1, limit = 10 } = req.query;
-  let data = {
-    name: req.body.name,
-    min: req.body.minAmount,
-    max: req.body.maxAmount,
-    interest: req.body.interest,
-    loanRepayment: req.body.loanRepayment,
-  };
-  if (data.min) {
-    data = {
-      name: req.body.name,
-      interest: req.body.interest,
-      loanRepayment: req.body.loanRepayment,
-      amount: { $gte: data.min, $lte: data.max },
-    };
-  }
-  Object.keys(data).forEach((key) => {
-    if (data[key] === null || data[key] === undefined) {
-      delete data[key];
-    }
-  });
-  Loan.find(data)
-    .limit(limit * 1)
-    .skip((page - 1) * limit)
-    .exec(async (err, loan) => {
-      if (err) {
-        res.status(404).send({ error: "can't find data" });
-      } else {
-        const count = await Loan.countDocuments(data);
-        res.status(200).send({
-          loans: loan,
-          totalPages: Math.ceil(count / limit),
-          currentPage: page,
-        });
-      }
-    });
-};
-
-exports.costumerRequest = (req, res) => {
-  Loan.findById(req.body.loan, (err, loan) => {
-    if (err) {
-      res.status(404).send({ error: "can't find loan" });
-    } else {
-      CostumerRole.findOne({ user: req.userId }, (err, costumer) => {
-        if (err) {
-          res.status(404).send({ error: "can't find costumer" });
-        } else {
-          AdminRole.findById(req.body.admin, (err, admin) => {
-            if (err) {
-              res.status(404).send({ error: "can't find admin" });
-            } else {
-              // let dateObject = new Date();
-              // let date = dateObject.getDate()+"/"+dateObject.getMonth()+"/"+dateObject.getYear();
-              let date = moment().format("MMM Do YY");
-              const request = new Request({
-                details: loan.name + "\n Amount: " + loan.amount + "₪",
-                admin: admin,
-                loan: loan,
-                costumers: costumer,
-                status: "Pending",
-                date: date,
-              });
-              request.save((err) => {
-                if (err) {
-                  res.status(401).send({ error: err });
-                  return;
-                }
-              });
-              res.status(200).send({ msg: "Request submited successfully" });
-            }
-          });
-        }
-      });
-    }
-  });
-};
-
-exports.costumerGetAllRequests = (req, res) => {
-  const { page = 1, limit = 10 } = req.query;
-  User.findById(req.userId, (err, user) => {
-    if (err) {
-      res.status(404).send({ error: "can't find user" });
-    } else {
-      Request.find({ costumers: user.roleData })
-        .limit(limit * 1)
-        .skip((page - 1) * limit)
-        .exec(async (err, request) => {
-          if (err) {
-            res.status(404).send({ error: "can't find data" });
-          } else {
-            const count = await Request.countDocuments({
-              costumers: user.roleData,
-            });
-            res.status(200).send({
-              requests: request,
-              totalPages: Math.ceil(count / limit),
-              currentPage: page,
-            });
-          }
-        });
-    }
-  });
-};
-
+/**
+ * @Controller GET Request paging API for getting all the requests that an admin has.
+ * In this controller, we expect to get query params in order to allow
+ * paging, if we didnt get the query params that we put bellow, then we
+ * assume that the params are { page = 1, limit = 10 }.
+ * @param page a param send with the query to specify which page to return.
+ * @param limit a param send with the query to specify the limit in the page.
+ * @return {requests, totalPages, currentPage}, requests is for the requests in the page given, totalPages is for the number of pages,
+ * and currentPage is for the page that has been requested.
+ */
 exports.adminGetAllRequests = (req, res) => {
   const { page = 1, limit = 10 } = req.query;
   User.findById(req.userId, (err, user) => {
@@ -242,7 +173,12 @@ exports.adminGetAllRequests = (req, res) => {
     }
   });
 };
-
+/**
+ * @Controller PUT Request for updating a request status.
+ * In this controller we expect the params in the body of the request, see below:
+ * @param status The loan request new status.
+ * @return A message if the request was successful or not.
+ */
 exports.changeRequestStatus = (req, res) => {
   Request.findById(req.body.request, (err, request) => {
     if (err) {
@@ -259,25 +195,42 @@ exports.changeRequestStatus = (req, res) => {
     }
   });
 };
-
+/**
+ * @Controller GET Request for getting the contact information of a loan request user.
+ * In this controller we expect the params in the body of the request, see below:
+ * @param user The id of the user that requested the loan.
+ * @return { user: user } of error message if not found.
+ */
 exports.getContactInfo = (req, res) => {
   User.find({ roleData: req.body.user }, (err, user) => {
     if (err) {
-      res.status(500).send({ error: err.message });
+      res.status(404).send({ error: err.message });
     } else {
       res.status(200).send({ user: user });
     }
   });
 };
-
+/**
+ * @Controller GET Request for getting the charts data for an admin.
+ * @return { chartData } of error message if an error is encountered.
+ */
 exports.getAdminCharts = (req, res) => {
-  User.find({ roleData: req.body.user }, async (err, user) => {
+  User.findById(req.userId, async (err, user) => {
     if (err) {
       res.status(500).send({ error: err.message });
     } else {
-      const accepted = await Request.countDocuments({ status: "Accepted" });
-      const pending = await Request.countDocuments({ status: "Pending" });
-      const rejected = await Request.countDocuments({ status: "Rejected" });
+      const accepted = await Request.countDocuments({
+        status: "Accepted",
+        admin: user.roleData,
+      });
+      const pending = await Request.countDocuments({
+        status: "Pending",
+        admin: user.roleData,
+      });
+      const rejected = await Request.countDocuments({
+        status: "Rejected",
+        admin: user.roleData,
+      });
       const pieChartData = [
         {
           name: "Accepted",

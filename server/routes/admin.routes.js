@@ -1,5 +1,5 @@
 const { jwtAuthentication, checkAddLoan } = require("../middlewares");
-const controller = require("../controllers/user.controller");
+const controller = require("../controllers/admin.controller");
 
 module.exports = function (app) {
   app.use(function (req, res, next) {
@@ -9,36 +9,6 @@ module.exports = function (app) {
     );
     next();
   });
-
-  app.get(
-    "/api/test/user",
-    [jwtAuthentication.checkToken, jwtAuthentication.checkUser],
-    controller.userBoard
-  );
-
-  app.post(
-    "/api/user/findloans",
-    [jwtAuthentication.checkToken, jwtAuthentication.checkUser],
-    controller.costumerGetAllLoans
-  );
-
-  app.get(
-    "/api/user/getallrequests",
-    [jwtAuthentication.checkToken, jwtAuthentication.checkUser],
-    controller.costumerGetAllRequests
-  );
-
-  app.post(
-    "/api/user/request",
-    [jwtAuthentication.checkToken, jwtAuthentication.checkUser],
-    controller.costumerRequest
-  );
-
-  app.get(
-    "/api/test/admin",
-    [jwtAuthentication.checkToken, jwtAuthentication.checkAdmin],
-    controller.adminBoard
-  );
 
   app.post(
     "/api/admin/addloan",

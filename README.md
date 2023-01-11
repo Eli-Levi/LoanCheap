@@ -1,7 +1,7 @@
 # LoanCheap
-## _The source for the most affordable loans_
+This repo is for a Software engineering course in ariel university.
 
-LoanCheap is a mobile app, for loans.
+#### LoanCheap is a mobile app, for loans.
 
 - Log in and find the best loan opportunities from the best banks
 - Send a request and the bank will call you
@@ -9,10 +9,14 @@ LoanCheap is a mobile app, for loans.
 ## Features (for users)
 - Search for loans and filter results
 - Send a request for a loan
+- View pending and accepted loans
 
 ## Features (for admin)
 - Add new loans and remove old loans
-- Manage loan requests made by users
+- See loan requests made by users
+- Accept and reject requests for loans made by you
+- Contact users who sybmitted for your loans via phone or email
+- See statistics
 
 ## Development
 LoanCheap is built with:
