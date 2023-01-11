@@ -166,14 +166,15 @@ const UserHomeScreen = ({ navigation }) => {
           <Dialog.Button
             title="CONFIRM"
             onPress={() => {
-              if (name === "") {
+              let nameValue = null;
+              if (name !== "") {
                 console.log("name=" + name + "name");
-                setName(null);
+                nameValue = name;
               }
               setSearch(false);
               console.log(name);
               navigation.navigate("FindLoans", {
-                name: name,
+                name: nameValue,
                 minAmount: min,
                 maxAmount: max,
                 interest: interest,
