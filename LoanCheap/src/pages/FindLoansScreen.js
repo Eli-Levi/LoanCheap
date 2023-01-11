@@ -21,11 +21,12 @@ const FindLoansScreen = ({ route, navigation }) => {
   const [nextDisabled, setNextDisabled] = useState(false);
   const [prevDisabled, setPrevDisabled] = useState(true);
   console.log(name, minAmount, maxAmount, interest, loanRepayment);
+  const pageLimit = 5;
   const getFetchData = async (currentPage) => {
     try {
       let fetchData = await searchLoans(
         currentPage,
-        5,
+        pageLimit,
         name,
         minAmount,
         maxAmount,
@@ -63,7 +64,7 @@ const FindLoansScreen = ({ route, navigation }) => {
                 onPress={() => {
                   try {
                     if (loanRequest(loan, admin)) {
-                      Alert.alert("Request submited successfully!");
+                      Alert.alert("Request submitted successfully!");
                     } else {
                       Alert.alert("Please try again later");
                     }
