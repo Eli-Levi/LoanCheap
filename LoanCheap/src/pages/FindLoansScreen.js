@@ -20,7 +20,6 @@ const FindLoansScreen = ({ route, navigation }) => {
   const { name, minAmount, maxAmount, interest, loanRepayment } = route.params;
   const [nextDisabled, setNextDisabled] = useState(false);
   const [prevDisabled, setPrevDisabled] = useState(true);
-  console.log(name, minAmount, maxAmount, interest, loanRepayment);
   const pageLimit = 5;
   const getFetchData = async (currentPage) => {
     try {
@@ -36,7 +35,6 @@ const FindLoansScreen = ({ route, navigation }) => {
       setTotalPages(fetchData.totalPages || 0);
       setLoans(fetchData.loans || []);
       setCurrentPage(fetchData.currentPage);
-      console.log("fetch successfully");
     } catch (error) {
       console.log(error);
     }

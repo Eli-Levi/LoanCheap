@@ -8,7 +8,7 @@ import {
   ContributionGraph,
   StackedBarChart,
 } from "react-native-chart-kit";
-import { progressChartData, pieChartData } from "./data";
+import { pieChartData } from "../constants/data";
 import { useIsFocused } from "@react-navigation/native";
 import {getCharts} from "../services/getcharts"
 const chartConfigs = [

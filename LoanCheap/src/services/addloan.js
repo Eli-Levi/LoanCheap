@@ -32,12 +32,11 @@ export async function addLoan(loanNam, amount, loanRepayment, info, interest) {
       info: info,
     }),
   };
-  console.log(API_URL);
+  // console.log(API_URL);
   try {
     let res = fetch(`${API_URL}/api/admin/addloan`, requestParameters)
       .then(response => {
         if (response.ok) {
-//          response.json().then(data => {});
           console.log('loan added successfully');
           return true;
         } else {

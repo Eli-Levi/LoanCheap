@@ -160,7 +160,7 @@ const App: () => Node = ({ navigation }) => {
       try {
         userToken = await AsyncStorage.getItem("userToken");
         admin = await AsyncStorage.getItem("isAdmin");
-        console.log(admin);
+        // console.log(admin);
         if (admin === "admin") {
           adminBool = true;
         } else {

@@ -32,7 +32,6 @@ export async function updateLoan(
       info: info,
     }),
   };
-  console.log(API_URL);
   try {
     let res = fetch(`${API_URL}/api/admin/editloan`, requestParameters)
       .then((response) => {

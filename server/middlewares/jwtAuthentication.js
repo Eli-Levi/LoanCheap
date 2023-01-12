@@ -5,7 +5,7 @@ const User = db.user;
 const UserRole = db.role;
 
 /**
- * @Middleware for valdating if a token already exists in the database.
+ * @Middleware for valdating if a token belongs to a user.
  * In this middleware, we expect the token in the body of the request.
  * @param token The token.
  * If successful then next() else return error message.

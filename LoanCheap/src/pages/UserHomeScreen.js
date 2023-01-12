@@ -37,7 +37,7 @@ const UserHomeScreen = ({ navigation }) => {
     try {
       let fetchData = await getAllRequests(currentPage, 6, "user");
       setTotalPages(fetchData?.totalPages || 0);
-      console.log(fetchData?.requests?.length);
+      // console.log(fetchData?.requests?.length);
       let temp = [];
       for (let index = 0; index < fetchData?.requests?.length; index++) {
         let loanId = fetchData.requests[index]?._id;
@@ -66,7 +66,7 @@ const UserHomeScreen = ({ navigation }) => {
         tableData: temp,
       });
       setCurrentPage(fetchData?.currentPage);
-      console.log("fetch successfully");
+      // console.log("fetch successfully");
     } catch (error) {
       console.log(error);
     }
@@ -168,11 +168,11 @@ const UserHomeScreen = ({ navigation }) => {
             onPress={() => {
               let nameValue = null;
               if (name !== "") {
-                console.log("name=" + name + "name");
+                // console.log("name=" + name + "name");
                 nameValue = name;
               }
               setSearch(false);
-              console.log(name);
+              // console.log(name);
               navigation.navigate("FindLoans", {
                 name: nameValue,
                 minAmount: min,
